@@ -69,7 +69,48 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
+        public KhachModel delete(string id)
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimKiemKhachHangTheoID",
+                     "@KhachHangID", id);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<KhachModel>().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
+        public bool Delete(string id)
+        {
+            string msgError = "";
+            bool kq; // Khởi tạo mặc định là false
+            try
+            {
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaKhachHang",
+                     "@KhachHangID", id);
+                // Kiểm tra kết quả trả về từ hàm ExecuteScalarSProcedureWithTransaction
+                if (Convert.ToInt32(result) > 0)
+                {
+                    kq = true; // Xóa thành công, đặt kq thành true
+                }
+                else
+                {
+                    kq = false;
+                }
+                return kq;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public List<KhachModel> Search(int pageIndex, int pageSize, out long total, string ten_khach, string dia_chi)
         {
             string msgError = "";
@@ -91,5 +132,7 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
+        
+
     }
 }

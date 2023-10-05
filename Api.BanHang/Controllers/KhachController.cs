@@ -63,5 +63,12 @@ namespace Api.BanHang.Controllers
                 throw new Exception(ex.Message);
             } 
         }
+        [Route("delete-khach")]
+        [HttpDelete]
+        public IActionResult DeleteItem(string id)
+        {
+            _khachBusiness.Delete(id);
+            return Ok(id);
+        }
     }
 }
