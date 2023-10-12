@@ -3,7 +3,7 @@ using DataModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Api.BanHang.Controllers
+namespace BTL_PTPM_NHN.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

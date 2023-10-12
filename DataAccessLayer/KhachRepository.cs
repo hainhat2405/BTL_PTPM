@@ -106,6 +106,9 @@ namespace DataAccessLayer
                 return kq;
             }
             catch (Exception ex)
+
+
+
             {
                 throw ex;
             }

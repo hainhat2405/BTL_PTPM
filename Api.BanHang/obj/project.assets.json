@@ -2573,9 +2573,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\BTL_PTPM_NHN\\Api.BanHang\\Api.BanHang.csproj",
-      "projectName": "Api.BanHang",
-      "projectPath": "D:\\BTL_PTPM_NHN\\Api.BanHang\\Api.BanHang.csproj",
+      "projectUniqueName": "D:\\BTL_PTPM_NHN\\Api.BanHang\\BTL_PTPM_NHN.csproj",
+      "projectName": "BTL_PTPM_NHN",
+      "projectPath": "D:\\BTL_PTPM_NHN\\Api.BanHang\\BTL_PTPM_NHN.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
       "outputPath": "D:\\BTL_PTPM_NHN\\Api.BanHang\\obj\\",
       "projectStyle": "PackageReference",
