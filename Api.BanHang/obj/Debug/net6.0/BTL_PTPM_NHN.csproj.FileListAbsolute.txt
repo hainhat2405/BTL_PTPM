@@ -78,3 +78,4 @@ D:\BTL_PTPM_NHN\Api.BanHang\obj\Debug\net6.0\refint\BTL_PTPM_NHN.dll
 D:\BTL_PTPM_NHN\Api.BanHang\obj\Debug\net6.0\BTL_PTPM_NHN.pdb
 D:\BTL_PTPM_NHN\Api.BanHang\obj\Debug\net6.0\BTL_PTPM_NHN.genruntimeconfig.cache
 D:\BTL_PTPM_NHN\Api.BanHang\obj\Debug\net6.0\ref\BTL_PTPM_NHN.dll
+D:\BTL_PTPM_NHN\Api.BanHang\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{8A84A36E-5A0A-4C1E-A4BB-D284F5651865}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTL_PTPM_NHN", "Api.BanHang\BTL_PTPM_NHN.csproj", "{BFE1FCC0-79D7-408F-9B2B-70DF65BC37C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.BanHang", "Api.BanHang\Api.BanHang.csproj", "{BFE1FCC0-79D7-408F-9B2B-70DF65BC37C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "DataModel\DataModel.csproj", "{4120301B-F1D5-4558-A95A-F9945D9C5413}"
 EndProject

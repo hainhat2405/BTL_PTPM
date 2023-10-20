@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BusinessLogicLayer.Interfaces;
+using DataModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BTL_PTPM_NHN.Controllers
+namespace Api.BanHang.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

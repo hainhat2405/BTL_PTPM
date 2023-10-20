@@ -3,7 +3,7 @@ using DataModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BTL_PTPM_NHN.Controllers
+namespace Api.BanHang.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -34,9 +34,16 @@ namespace BTL_PTPM_NHN.Controllers
             _hoadonBusiness.Update(model);
             return model;
         }
-
+        [Route("delete-hoadon")]
+        [HttpDelete]
+        public IActionResult DeleteItem(string id)
+        {
+            _hoadonBusiness.Delete(id);
+            return Ok(id);
+        }
         [Route("search")]
         [HttpPost]
+
         public IActionResult Search([FromBody] Dictionary<string, object> formData)
         {
             try

@@ -21,7 +21,7 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "HoadonID",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "hoadonID",
                      "@DonHangBanID", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
@@ -43,7 +43,7 @@ namespace DataAccessLayer
                 "@NhanVienID", model.NhanVienID,
                 "@TrietKhauBan", model.TrietKhauBan,
                 "@NgayBan", model.NgayBan,
-                "@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
+                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -60,13 +60,13 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_hoa_don_update",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoaDon_update",
                 "@MaHoaDon", model.DonHangBanID,
                 "@TenKH", model.KhachHangID,
                 "@NhanVienID", model.NhanVienID,
                 "@TrietKhauBan", model.TrietKhauBan,
                 "@NgayBan", model.NgayBan,
-                "@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
+                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -109,7 +109,7 @@ namespace DataAccessLayer
             try
             {
                 var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaDonHangBan",
-                     "@DonHangBan", id);
+                     "@DonHangBanID", id);
                 // Kiểm tra kết quả trả về từ hàm ExecuteScalarSProcedureWithTransaction
                 if (Convert.ToInt32(result) > 0)
                 {
