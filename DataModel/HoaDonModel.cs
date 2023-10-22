@@ -14,7 +14,7 @@ namespace DataModel
         public DateTime NgayBan { get; set; }
         public float TrietKhauBan { get; set; }
 
-        public List<ChiTietHoaDonModel> list_json_chitietdonhangban { get; set; }
+        public List<ChiTietHoaDonModel> list_json_chitiethoadon { get; set; }
 
     }
     public class ChiTietHoaDonModel

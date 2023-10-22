@@ -61,7 +61,7 @@ namespace Api.BanHang.Controllers
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            } 
+            }
         }
         [Route("delete-khach")]
         [HttpDelete]

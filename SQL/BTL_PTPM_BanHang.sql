@@ -5,7 +5,7 @@ use BTL_PTPM_BanHang
 go
 create table LoaiHang
 (
-	LoaiHangID char(10) primary key	,
+	LoaiHangID int IDENTITY(1,1) NOT NULL primary key	,
 	TenLH nvarchar(60)
 )
 go
@@ -79,12 +79,39 @@ create table DonHangNhap
 go
 create table ChiTietDHN
 (
-	DonHangNhapID char(10),
+	DonHangNhapID char(10) primary key,
 	MatHangID char(10) foreign key references MatHang(MatHangID) on delete cascade on update cascade,
 	SLNhap tinyint,
 	DGNhap float
-	constraint P_CHDHN primary key(DonHangNhapID,MatHangID)
+	
 )
+
+create table TaiKhoan
+(
+	MaTaiKhoan int primary key,
+	MaLoai int,
+	TenTaiKhoan nvarchar(50) NULL,
+	MatKhau nvarchar(50) NULL,
+	Email nvarchar(150) NULL
+)
+
+create table LoaiTk
+(
+	MaLoai int primary key,
+	TenLoai nvarchar(50) NULL,
+	MoTa nvarchar(250) NULL
+)
+
+create table ChiTietTaiKhoan
+(
+	MaChitietTaiKhoan int  primary key,
+	MaTaiKhoan int NULL foreign key references TaiKhoan(MaTaiKhoan) on delete cascade on update cascade,
+	HoTen nvarchar(50) NULL,
+	DiaChi nvarchar(250) NULL,
+	SoDienThoai nvarchar(11) NULL,
+)
+
+
 
 INSERT INTO LoaiHang (LoaiHangID, TenLH)
 VALUES
@@ -171,10 +198,7 @@ VALUES
 INSERT INTO ChiTietDHB (DonHangBanID, MatHangID, SLBan, DGBan)
 VALUES
     ('DHB001', 'MH001', 5, 100000),
-    ('DHB001', 'MH002', 3, 50000),
-    ('DHB002', 'MH003', 2, 80000),
-    ('DHB002', 'MH004', 4, 120000),
-    ('DHB003', 'MH001', 1, 100000)
+    ('DHB002', 'MH002', 3, 50000)
 
 
 INSERT INTO ChiTietDHN (DonHangNhapID, MatHangID, SLNhap, DGNhap)
@@ -184,3 +208,20 @@ VALUES
     ('DHN002', 'MH003', 3, 70000),
     ('DHN002', 'MH004', 8, 110000),
     ('DHN003', 'MH005', 4, 50000)
+
+INSERT INTO TaiKhoan (MaTaiKhoan, MaLoai, TenTaiKhoan, MatKhau,Email)
+VALUES
+    ('1', '1', 'admin1', '123','hghrhg@gmail.com'),
+	('2', '2', 'use', '1234','gredfg@gmail.com')
+
+INSERT INTO LoaiTk (MaLoai, TenLoai, MoTa)
+VALUES
+    ('1', 'admin', 'quan ly'),
+	('2', 'use', 'nguoi dung')
+
+INSERT INTO ChiTietTaiKhoan (MaChitietTaiKhoan, MaTaiKhoan, HoTen,DiaChi,SoDienThoai)
+VALUES
+    ('1', '1', 'Nhat','VanGiang','0987654321'),
+	('2', '2', 'Duc','HungYen','0984654321')
+
+

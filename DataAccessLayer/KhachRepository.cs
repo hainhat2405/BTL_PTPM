@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer
 {
-    public class KhachRepository:IKhachRepository
+    public class KhachRepository : IKhachRepository
     {
         private IDatabaseHelper _dbHelper;
         public KhachRepository(IDatabaseHelper dbHelper)
@@ -135,7 +135,7 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-        
+
 
     }
 }

@@ -37,17 +37,18 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_hoadon_create",
-                "@MaHoaDon", model.DonHangBanID,
-                "@TenKH", model.KhachHangID,
-                "@NhanVienID", model.NhanVienID,
-                "@TrietKhauBan", model.TrietKhauBan,
-                "@NgayBan", model.NgayBan,
-                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadon_create",
+                    "@NhanVienID", model.NhanVienID,         // Make sure parameter names match those in the stored procedure
+                    "@KhachHangID", model.KhachHangID,       // Make sure parameter names match those in the stored procedure
+                    "@NgayBan", model.NgayBan,               // Make sure parameter names match those in the stored procedure
+                    "@TrietKhauBan", model.TrietKhauBan,     // Make sure parameter names match those in the stored procedure
+                    "@@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
+
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -55,18 +56,18 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
+
         public bool Update(HoaDonModel model)
         {
             string msgError = "";
             try
             {
                 var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoaDon_update",
-                "@MaHoaDon", model.DonHangBanID,
-                "@TenKH", model.KhachHangID,
+                "@KhachHangID", model.KhachHangID,
                 "@NhanVienID", model.NhanVienID,
                 "@TrietKhauBan", model.TrietKhauBan,
                 "@NgayBan", model.NgayBan,
-                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
+                "@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
