@@ -1,7 +1,8 @@
-﻿using BusinessLogicLayer;
+﻿using BusinessLogicLayer.Interfaces;
 using DataModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using DataAccessLayer.Interfaces;
 
 namespace Api.BanHang.Controllers
 {

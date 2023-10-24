@@ -17,7 +17,7 @@ namespace BusinessLogicLayer
             _res = res;
         }
 
-        public HoaDonModel GetDatabyID(string id)
+        public HoaDonModel GetDatabyID(int id)
         {
             return _res.GetDatabyID(id);
         }
@@ -29,7 +29,7 @@ namespace BusinessLogicLayer
         {
             return _res.Update(model);
         }
-        public bool Delete(string id)
+        public bool Delete(int id)
         {
             return _res.Delete(id);
         }

@@ -16,7 +16,7 @@ namespace Api.BanHang.Controllers
         }
         [Route("get-by-id/{id}")]
         [HttpGet]
-        public HoaDonModel GetDatabyID(string id)
+        public HoaDonModel GetDatabyID(int id)
         {
             return _hoadonBusiness.GetDatabyID(id);
         }
@@ -36,7 +36,7 @@ namespace Api.BanHang.Controllers
         }
         [Route("delete-hoadon")]
         [HttpDelete]
-        public IActionResult DeleteItem(string id)
+        public IActionResult DeleteItem(int id)
         {
             _hoadonBusiness.Delete(id);
             return Ok(id);

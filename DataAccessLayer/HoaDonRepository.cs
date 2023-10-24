@@ -16,13 +16,13 @@ namespace DataAccessLayer
             _dbHelper = dbHelper;
         }
 
-        public HoaDonModel GetDatabyID(string id)
+        public HoaDonModel GetDatabyID(int id)
         {
             string msgError = "";
             try
             {
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "hoadonID",
-                     "@DonHangBanID", id);
+                     "@MaHoaDonBan", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 return dt.ConvertTo<HoaDonModel>().FirstOrDefault();
@@ -37,18 +37,15 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadon_create",
-                    "@NhanVienID", model.NhanVienID,         // Make sure parameter names match those in the stored procedure
-                    "@KhachHangID", model.KhachHangID,       // Make sure parameter names match those in the stored procedure
-                    "@NgayBan", model.NgayBan,               // Make sure parameter names match those in the stored procedure
-                    "@TrietKhauBan", model.TrietKhauBan,     // Make sure parameter names match those in the stored procedure
-                    "@@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
-
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadonCreate",
+                "@KhachHangID", model.KhachHangID,
+                 "@NgayBan", model.NgayBan,
+                "@ThanhTien", model.ThanhTien,
+                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -56,18 +53,17 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-
         public bool Update(HoaDonModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoaDon_update",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadonUp",
+                "@MaHoaDon", model.MaHoaDonBan,
                 "@KhachHangID", model.KhachHangID,
-                "@NhanVienID", model.NhanVienID,
-                "@TrietKhauBan", model.TrietKhauBan,
-                "@NgayBan", model.NgayBan,
-                "@list_json_chitiethoadon", model.list_json_chitiethoadon != null ? MessageConvert.SerializeObject(model.list_json_chitiethoadon) : null);
+                 "@NgayBan", model.NgayBan,
+                "@ThanhTien", model.ThanhTien,
+                "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -103,14 +99,14 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-        public bool Delete(string id)
+        public bool Delete(int id)
         {
             string msgError = "";
             bool kq; // Khởi tạo mặc định là false
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaDonHangBan",
-                     "@DonHangBanID", id);
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaHoaDonBan",
+                     "@MaHoaDonBan", id);
                 // Kiểm tra kết quả trả về từ hàm ExecuteScalarSProcedureWithTransaction
                 if (Convert.ToInt32(result) > 0)
                 {
