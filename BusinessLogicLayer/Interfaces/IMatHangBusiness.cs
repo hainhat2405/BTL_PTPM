@@ -10,9 +10,9 @@ namespace BusinessLogicLayer.Interfaces
     public partial interface IMatHangBusiness
     {
         MatHangModel GetChiTietMatHang(string id);
-        //bool Create(HoaDonModel model);
-        //bool Update(HoaDonModel model);
-        //bool Delete(int id);
+        bool Create(MatHangModel model);
+        bool Update(MatHangModel model);
+        bool Delete(string id);
         //public List<ThongKeKhachModel> Search(int pageIndex, int pageSize, out long total, string ten_khach, DateTime? fr_NgayTao, DateTime? to_NgayTao);
     }
 }

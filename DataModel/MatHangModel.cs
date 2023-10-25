@@ -11,6 +11,6 @@ namespace DataModel
 
         public string DVTinh { get; set; }
         public int SLTon { get; set; }
-        public List<MatHangModel> list_json_chitietmathang { get; set; }
+        //public List<MatHangModel> list_json_chitietmathang { get; set; }
     }
 }

@@ -10,10 +10,10 @@ namespace DataAccessLayer.Interfaces
     public partial interface IMatHangRepository
     {
         MatHangModel GetChiTietMatHang(string id);
-        //bool Create(HoaDonModel model);
-        //bool Update(HoaDonModel model);
+        bool Create(MatHangModel model);
+        bool Update(MatHangModel model);
 
-        //bool Delete(int id);
+        bool Delete(string id);
         //public List<ThongKeKhachModel> Search(int pageIndex, int pageSize, out long total, string ten_khach, DateTime? fr_NgayTao, DateTime? to_NgayTao);
     }
 }
