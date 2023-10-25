@@ -12,7 +12,7 @@ namespace DataModel
         public string KhachHangID { get; set; }
         public DateTime NgayBan { get; set; }
 
-        public string ThanhTien { get; set; }
+        public float ThanhTien { get; set; }
 
         public int status { get; set; }
         public List<ChiTietHoaDonModel> list_json_chitietdonhangban { get; set; }
@@ -23,6 +23,6 @@ namespace DataModel
         public int MaHoaDonBan { get; set; }
         public string MatHangID { get; set; }
         public int SoLuong { get; set; }
-        public int DonGia { get; set; }
+        public int GiaBan { get; set; }
     }
 }

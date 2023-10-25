@@ -248,7 +248,10 @@ BEGIN
     END
 END
 
-exec XoaHoaDonBan'5'
+
+select * from HoaDonBan
+select * from ChiTietHoaDonBan
+exec XoaHoaDonBan'8'
 
 
 -------------------MatHang-----------------
@@ -326,3 +329,65 @@ as
 		where MatHangID = @MatHangID
 	end;
 go
+
+
+-----------TaifKhoan--------------------
+create PROCEDURE user_login
+(@taikhoan nvarchar(50), @matkhau nvarchar(50))
+AS
+    BEGIN
+      SELECT  *
+      FROM TaiKhoan
+      where TenTaiKhoan= @taikhoan and MatKhau = @matkhau;
+    END;
+
+CREATE PROCEDURE taikhoanID
+    @MaTaiKhoan int
+AS
+BEGIN
+    SELECT *
+    FROM TaiKhoan
+    WHERE MaTaiKhoan = @MaTaiKhoan
+END
+
+exec taikhoanID '1'
+
+CREATE PROCEDURE userCreate
+    @MaTaiKhoan int,
+    @MaLoai int,
+    @TenTaiKhoan nvarchar(50),
+    @MatKhau nvarchar(50),
+    @Email  nvarchar(50)
+AS
+BEGIN
+    INSERT INTO TaiKhoan (MaTaiKhoan, MaLoai, TenTaiKhoan, MatKhau, Email)
+    VALUES (@MaTaiKhoan, @MaLoai, @TenTaiKhoan, @MatKhau, @Email)
+END
+
+
+---------- cập nhật thông tin khách hàng-------------
+CREATE PROCEDURE userUpdate
+    @MaTaiKhoan int,
+    @MaLoai int,
+    @TenTaiKhoan nvarchar(50),
+    @MatKhau nvarchar(50),
+    @Email  nvarchar(50)
+AS
+BEGIN
+    UPDATE TaiKhoan
+    SET
+        MaLoai = @MaLoai,
+        TenTaiKhoan = @TenTaiKhoan,
+        MatKhau = @MatKhau,
+		Email = @Email
+    WHERE
+        MaTaiKhoan = @MaTaiKhoan
+END
+-----------------xóa thông tin khách hàng------------------------
+CREATE PROCEDURE userDelete
+    @MaTaiKhoan int
+AS
+BEGIN
+    DELETE FROM TaiKhoan
+    WHERE MaTaiKhoan = @MaTaiKhoan
+END
