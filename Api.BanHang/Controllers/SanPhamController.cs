@@ -8,29 +8,35 @@ namespace Api.BanHang.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MatHangController : ControllerBase
+    public class SanPhamController : ControllerBase
     {
-        private IMatHangBusiness _mathangBusiness;
-        public MatHangController(IMatHangBusiness mathangBusiness)
+        private ISanPhamBusiness _mathangBusiness;
+        public SanPhamController(ISanPhamBusiness mathangBusiness)
         {
             _mathangBusiness = mathangBusiness;
         }
         [Route("get-by-id/{id}")]
         [HttpGet]
-        public MatHangModel GetChiTietMatHang(string id)
+        public SanPhamModel GetChiTietMatHang(string id)
+        {
+            return _mathangBusiness.GetChiTietMatHang(id);
+        } 
+        [Route("get-by-id/{id}")]
+        [HttpGet]
+        public SanPhamModel GetChiTietMatHang(string id)
         {
             return _mathangBusiness.GetChiTietMatHang(id);
         }
         [Route("create-mathang")]
         [HttpPost]
-        public MatHangModel CreateItem([FromBody] MatHangModel model)
+        public SanPhamModel CreateItem([FromBody] SanPhamModel model)
         {
             _mathangBusiness.Create(model);
             return model;
         }
         [Route("update-mathang")]
         [HttpPost]
-        public MatHangModel UpdateItem([FromBody] MatHangModel model)
+        public SanPhamModel UpdateItem([FromBody] SanPhamModel model)
         {
             _mathangBusiness.Update(model);
             return model;

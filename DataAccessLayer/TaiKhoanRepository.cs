@@ -1,50 +1,48 @@
-﻿using DataAccessLayer.Interfaces;
-using DataModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer.Interfaces;
+using DataModel;
 
 namespace DataAccessLayer
 {
-    public class MatHangRepository : IMatHangRepository
+    public class TaiKhoanRepository : ITaiKhoanRepository
     {
         private IDatabaseHelper _dbHelper;
-        public MatHangRepository(IDatabaseHelper dbHelper)
+        public TaiKhoanRepository(IDatabaseHelper dbHelper)
         {
             _dbHelper = dbHelper;
         }
-
-        public MatHangModel GetChiTietMatHang(string id)
+ 
+        public UserModel GetDatabyID(string id)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "mathangid",
-                     "@MatHangID", id);
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "taikhoanID",
+                     "@MaTaiKhoan", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<MatHangModel>().FirstOrDefault();
+                return dt.ConvertTo<UserModel>().FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-
-
-        public bool Create(MatHangModel model)
+        public bool Create(UserModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangCreate",
-                "@LoaiHangID", model.LoaiHangID,
-                "@MatHangId", model.MatHangId,
-                "@TenHang", model.TenHang,
-                "@DVTinh", model.DVTinh,
-                "@SLTon", model.SLTon);
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "userCreate",
+                "@MaTaiKhoan", model.MaTaiKhoan,
+                "@MaLoai", model.MaLoai,
+                "@TenTaiKhoan", model.TenTaiKhoan,
+                "@MatKhau", model.MatKhau,
+                "@Email", model.Email);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -56,17 +54,18 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-            public bool Update(MatHangModel model)
+        public bool Update(UserModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangUpdate",
-                "@MatHangId", model.MatHangId,
-                "@LoaiHangID", model.LoaiHangID,
-                "@TenHang", model.TenHang,
-                "@DVTinh", model.DVTinh,
-                "@SLTon", model.SLTon);
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "userUpdate",
+
+                "@MaTaiKhoan", model.MaTaiKhoan,
+                "@MaLoai", model.MaLoai,
+                "@TenTaiKhoan", model.TenTaiKhoan,
+                "@MatKhau", model.MatKhau,
+                "@Email", model.Email);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -81,15 +80,15 @@ namespace DataAccessLayer
         public bool Delete(string id)
         {
             string msgError = "";
-            bool kq; // Khởi tạo mặc định là false
+            bool kq; 
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "mathangDelete",
-                     "@MatHangID", id);
-                // Kiểm tra kết quả trả về từ hàm ExecuteScalarSProcedureWithTransaction
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "userDelete",
+                     "@MaTaiKhoan", id);
+           
                 if (Convert.ToInt32(result) > 0)
                 {
-                    kq = true; // Xóa thành công, đặt kq thành true
+                    kq = true;
                 }
                 else
                 {

@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Interfaces
 {
-    public partial interface IMatHangRepository
+    public partial interface ISanPhamRepository
     {
-        MatHangModel GetChiTietMatHang(string id);
-        bool Create(MatHangModel model);
-        bool Update(MatHangModel model);
+        SanPhamModel GetChiTietMatHang(string id);
+        List<SanPhamModel> GetAllMH();
+        List<SanPhamModel> GetMH_Top();
+        SanPhamModel GetMH_Ten(string name);
+        SanPhamModel GetMH_LH(string lh);
+        bool Create(SanPhamModel model);
+        bool Update(SanPhamModel model);
 
         bool Delete(string id);
         //public List<ThongKeKhachModel> Search(int pageIndex, int pageSize, out long total, string ten_khach, DateTime? fr_NgayTao, DateTime? to_NgayTao);

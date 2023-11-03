@@ -74,15 +74,15 @@ namespace DataAccessLayer.Interfaces
         public bool Delete(string id)
         {
             string msgError = "";
-            bool kq; // Khởi tạo mặc định là false
+            bool kq;
             try
             {
                 var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaKhachHang",
                      "@KhachHangID", id);
-                // Kiểm tra kết quả trả về từ hàm ExecuteScalarSProcedureWithTransaction
+         
                 if (Convert.ToInt32(result) > 0)
                 {
-                    kq = true; // Xóa thành công, đặt kq thành true
+                    kq = true;
                 }
                 else
                 {

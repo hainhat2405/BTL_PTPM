@@ -102,7 +102,14 @@ AS
                         DROP TABLE #Results1; 
         END;
     END;
+	-- Declare variables for the parameters
+DECLARE @page_index INT = 1;            -- Page index
+DECLARE @page_size INT = 10;            -- Page size
+DECLARE @ten_khach NVARCHAR(50) = 'John Doe';  -- Search by name
+DECLARE @dia_chi NVARCHAR(250) = '123 Main St'; -- Search by address
 
+-- Execute the stored procedure
+EXEC khachSreach  @page_index = 1,@page_size= 10, @ten_khach= N'Nguyễn Thị A',@dia_chi= N'Hà Nội';
 
 	---------------------Hóa Đơn -------------------------
 create PROCEDURE hoadonID
@@ -121,9 +128,11 @@ BEGIN
     WHERE h.MaHoaDonBan = @MaHoaDonBan;
 END;
 
+select * from HoaDonBan
+select * from ChiTietHoaDonBan
 exec hoadonID '1'
 
-create PROCEDURE hoadonCreate
+alter PROCEDURE hoadonCreate
 (@KhachHangID              NVARCHAR(50),
 @NgayBan			datetime,
  @ThanhTien          float,
@@ -165,7 +174,7 @@ AS
 		select * from ChiTietHoaDonBan
 
 
-create PROCEDURE hoadonUpdate
+alter PROCEDURE hoadonUpdate
 (@MaHoaDonBan        int, 
  @KhachHangID       CHAR(10), 
  @NgayBan          datetime, 
@@ -210,6 +219,7 @@ AS
 			-- Update data to table with STATUS = 2
 			  UPDATE ChiTietHoaDonBan 
 			  SET
+				 MatHangID = #Results.matHangID,
 				 SoLuong = #Results.soLuong,
 				 GiaBan = #Results.giaBan
 			  FROM #Results 
@@ -391,3 +401,59 @@ BEGIN
     DELETE FROM TaiKhoan
     WHERE MaTaiKhoan = @MaTaiKhoan
 END
+
+create procedure mathang_getAll
+as
+	begin
+		select * from MatHang
+	end;
+go
+exec mathang_getAll
+
+CREATE PROCEDURE TimMatHangTheoTenHang
+    @TenHang nvarchar(50)
+AS
+BEGIN
+    SELECT *
+    FROM MatHang
+    WHERE TenHang = @TenHang;
+END;
+select * from MatHang
+exec TimMatHangTheoTenHang N'Bánh'
+
+------------------------
+CREATE PROCEDURE TimSoLuongBanNhieuNhat
+AS
+BEGIN
+    SELECT M.TenHang, SUM(CT.SoLuong) AS SoLuongBanNhieuNhat
+    FROM MatHang M
+    JOIN ChiTietHoaDonBan CT ON M.MatHangID = CT.MatHangID
+    GROUP BY M.TenHang
+    HAVING SUM(CT.SoLuong) = (SELECT MAX(SoLuongBan) FROM (SELECT SUM(SoLuong) AS SoLuongBan FROM ChiTietHoaDonBan GROUP BY MatHangID) AS MaxSoLuongBan)
+END
+
+drop proc TimSoLuongBanNhieuNhat
+
+CREATE PROCEDURE TimMatHangBanNhieuNhat
+AS
+BEGIN
+    SELECT TOP 1 M.TenHang, SUM(CT.SoLuong) AS SoLuongBanNhieuNhat
+    FROM MatHang M
+    JOIN ChiTietHoaDonBan CT ON M.MatHangID = CT.MatHangID
+    GROUP BY M.TenHang
+    ORDER BY SoLuongBanNhieuNhat DESC
+END
+
+exec ThongKeSanPhamKhachHang
+
+CREATE PROCEDURE ThongKeSanPhamKhachHang
+AS
+BEGIN
+    SELECT KH.KhachHangID, KH.HoTenKH, COUNT(CTHD.MatHangID) AS TongSoSanPhamDaMua
+    FROM KhachHang KH
+    LEFT JOIN HoaDonBan HDB ON KH.KhachHangID = HDB.KhachHangID
+    LEFT JOIN ChiTietHoaDonBan CTHD ON HDB.MaHoaDonBan = CTHD.MaHoaDonBan
+    GROUP BY KH.KhachHangID, KH.HoTenKH
+    ORDER BY TongSoSanPhamDaMua DESC;
+END
+

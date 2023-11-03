@@ -10,22 +10,38 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer
 {
-    public class MatHangBusiness : IMatHangBusiness
+    public class SanPhamBusiness : ISanPhamBusiness
     {
-        private IMatHangRepository _res;
-        public MatHangBusiness(IMatHangRepository res)
+        private ISanPhamRepository _res;
+        public SanPhamBusiness(ISanPhamRepository res)
         {
             _res = res;
         }
-        public MatHangModel GetChiTietMatHang(string id)
+        public SanPhamModel GetChiTietMatHang(string id)
         {
             return _res.GetChiTietMatHang(id);
         }
-        public bool Create(MatHangModel model)
+        public List<SanPhamModel> GetAllMH()
+        {
+            return _res.GetAllMH();
+        }
+        public List<SanPhamModel> GetMH_Top()
+        {
+            return _res.GetMH_Top();
+        }
+        public SanPhamModel GetMH_Ten(string name)
+        {
+            return _res.GetMH_Ten(name);
+        }
+        public SanPhamModel GetMH_LH(string lh)
+        {
+            return _res.GetMH_LH(lh);
+        }
+        public bool Create(SanPhamModel model)
         {
             return _res.Create(model);
         }
-        public bool Update(MatHangModel model)
+        public bool Update(SanPhamModel model)
         {
             return _res.Update(model);
         }

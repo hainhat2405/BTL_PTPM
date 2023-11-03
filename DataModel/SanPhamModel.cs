@@ -2,7 +2,7 @@
 
 namespace DataModel
 {
-    public class MatHangModel
+    public class SanPhamModel
     {
         public string LoaiHangID { get; set; }
         public string MatHangId { get; set; }
@@ -12,5 +12,15 @@ namespace DataModel
         public string DVTinh { get; set; }
         public int SLTon { get; set; }
         //public List<MatHangModel> list_json_chitietmathang { get; set; }
+    }
+
+    public class ChiTietHoaDonBanModel
+    {
+        public int MaChiTietHoaDonBan { get; set; }
+        public int MaHoaDonBan { get; set; }
+
+        public int SoLuong { get; set; }
+
+        public float GiaBan { get; set; }
     }
 }

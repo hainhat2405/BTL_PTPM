@@ -25,32 +25,6 @@ namespace Api.BanHang.Controllers
                 return BadRequest(new { message = "Tài khoản hoặc mật khẩu không đúng!" });
             return Ok(new { taikhoan = user.TenTaiKhoan, email = user.Email, token = user.token });
         }
-        [Route("get-by-id/{id}")]
-        [HttpGet]
-        public UserModel GetDatabyID(string id)
-        {
-            return _userBusiness.GetDatabyID(id);
-        }
-        [Route("create-user")]
-        [HttpPost]
-        public UserModel CreateItem([FromBody] UserModel model)
-        {
-            _userBusiness.Create(model);
-            return model;
-        }
-        [Route("update-user")]
-        [HttpPost]
-        public UserModel UpdateItem([FromBody] UserModel model)
-        {
-            _userBusiness.Update(model);
-            return model;
-        }
-        [Route("delete-user")]
-        [HttpDelete]
-        public IActionResult DeleteItem(string id)
-        {
-            _userBusiness.Delete(id);
-            return Ok(id);
-        }
+       
     }
 }

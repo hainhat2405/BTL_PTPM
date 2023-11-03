@@ -10,9 +10,5 @@ namespace BusinessLogicLayer.Interfaces
     public partial interface IUserBusiness
     {
         UserModel Login(string taikhoan, string matkhau);
-        UserModel GetDatabyID(string id);
-        bool Create(UserModel model);
-        bool Update(UserModel model);
-        bool Delete(string id);
     }
 }
