@@ -18,6 +18,7 @@ namespace DataModel
         public DateTime NgayTao { get; set; }
         public int SoLuongDaBan { get; set; }
         public float GiaBan { get; set; }
+        public string Anh { get; set; }
 
     }
 }

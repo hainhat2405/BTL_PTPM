@@ -15,7 +15,7 @@ namespace DataAccessLayer.Interfaces
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimKiemKhachHangTheoID",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "KhachHangID",
                      "@KhachHangID", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
@@ -31,7 +31,7 @@ namespace DataAccessLayer.Interfaces
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "ThemKhachHang",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "KhachHangCreate",
                 "@KhachHangID", model.KhachHangID,
                 "@HoTenKH", model.HoTenKH,
                 "@DiaChiKH", model.DiaChiKH,
@@ -53,7 +53,7 @@ namespace DataAccessLayer.Interfaces
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "CapNhatKhachHang",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "KhachHangUp",
                 "@KhachHangID", model.KhachHangID,
                "@HoTenKH", model.HoTenKH,
                 "@DiaChiKH", model.DiaChiKH,
@@ -77,7 +77,7 @@ namespace DataAccessLayer.Interfaces
             bool kq;
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaKhachHang",
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "KhachHangDel",
                      "@KhachHangID", id);
          
                 if (Convert.ToInt32(result) > 0)

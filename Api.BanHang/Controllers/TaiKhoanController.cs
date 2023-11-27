@@ -18,20 +18,20 @@ namespace Api.BanHang.Controllers
         }
         [Route("get-by-id/{id}")]
         [HttpGet]
-        public UserModel GetDatabyID(string id)
+        public TaiKhoanModel GetDatabyID(string id)
         {
             return _tkBusiness.GetDatabyID(id);
         }
         [Route("create-taikhoan")]
         [HttpPost]
-        public UserModel CreateItem([FromBody] UserModel model)
+        public TaiKhoanModel CreateItem([FromBody] TaiKhoanModel model)
         {
             _tkBusiness.Create(model);
             return model;
         }
         [Route("update-taikhoan")]
         [HttpPost]
-        public UserModel UpdateItem([FromBody] UserModel model)
+        public TaiKhoanModel UpdateItem([FromBody] TaiKhoanModel model)
         {
             _tkBusiness.Update(model);
             return model;

@@ -24,15 +24,15 @@ namespace BusinessLogicLayer
             _res = res;
             secret = configuration["AppSettings:Secret"];
         }
-        public UserModel GetDatabyID(string id)
+        public TaiKhoanModel GetDatabyID(string id)
         {
             return _res.GetDatabyID(id);
         }
-        public bool Create(UserModel model)
+        public bool Create(TaiKhoanModel model)
         {
             return _res.Create(model);
         }
-        public bool Update(UserModel model)
+        public bool Update(TaiKhoanModel model)
         {
             return _res.Update(model);
         }

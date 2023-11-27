@@ -38,7 +38,7 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "mathang_getAll");
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "getAllMH");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 return dt.ConvertTo<HomeModel>().ToList();
@@ -67,7 +67,7 @@ namespace DataAccessLayer
             }
         }
 
-        public HomeModel GetMH_LH(string lh)
+        public List<HomeModel> GetMH_LH(string lh)
         {
             string msgError = "";
             try
@@ -76,7 +76,7 @@ namespace DataAccessLayer
                      "@LoaiHangID", lh);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().FirstOrDefault();
+                return dt.ConvertTo<HomeModel>().ToList();
             }
             catch (Exception ex)
             {
@@ -101,12 +101,12 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_Gia(int gia)
+        public List<HomeModel> GetMH_Gia(float gia)
         {
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "SearchMatHangByPrice",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimSanPhamTheoGiaBan",
                      "@GiaBan", gia);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
@@ -123,8 +123,8 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "GetTopNNewestMatHangWithPrice",
-                     "@New", topnew);
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "FindTopNewProducts",
+                     "@TopProducts", topnew);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 return dt.ConvertTo<HomeModel>().ToList();
@@ -135,19 +135,80 @@ namespace DataAccessLayer
             }
         }
 
+        public List<HomeModel> GetMH_giaBanMinMax()
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "giaBanMinMax");
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<HomeModel> GetMH_giaBanMaxMin()
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "giaBanMaxMin");
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
+        public List<HomeModel> GetMH_giaBan100k()
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimSanPhamDuoiGia100000");
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<HomeModel> GetMH_giaBan100k_200k()
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimSanPhamGia100000_200000");
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool Create(SanPhamModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangCreate",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangCreate  ",
                 "@LoaiHangID", model.LoaiHangID,
                 "@MatHangID", model.MatHangID,
                 "@TenHang", model.TenHang,
                 "@DVTinh", model.DVTinh,
                 "@SoLuong", model.SoLuong,
-                "@NgayTao", model.NgayTao);
+                "@NgayTao", model.NgayTao,
+                 "@Anh", model.Anh);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -159,7 +220,7 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-            public bool Update(SanPhamModel model)
+        public bool Update(SanPhamModel model)
         {
             string msgError = "";
             try
@@ -170,7 +231,8 @@ namespace DataAccessLayer
                 "@TenHang", model.TenHang,
                 "@DVTinh", model.DVTinh,
                 "@SoLuong", model.SoLuong,
-                "@NgayTao", model.NgayTao);
+                "@NgayTao", model.NgayTao,
+                 "@Anh", model.Anh);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);

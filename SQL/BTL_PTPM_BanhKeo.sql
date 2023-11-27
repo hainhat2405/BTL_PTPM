@@ -15,12 +15,12 @@ create table MatHang
 	MatHangID char(10) primary key,
 	TenHang nvarchar(50),
 	DVTinh nvarchar(10),
-	SoLuong tinyint,
+	Anh nvarchar(200),
 	NgayTao datetime
 )
 ALTER TABLE MatHang
 
-ADD NgayTao datetime;
+ADD Anh nvarchar(50);
 go
 create table NhanVien
 (
@@ -42,6 +42,7 @@ create table NhaCC
 	SdtNCC char(10)	
 )
 go
+
 create table KhachHang
 (
 	KhachHangID char(10) primary key,
@@ -58,17 +59,21 @@ MaHoaDonBan int identity(1,1) not null primary key,
 KhachHangID char(10),
 NgayBan datetime,
 ThanhTien float,
+NgayTao datetime,
 FOREIGN KEY (KhachHangID) REFERENCES KhachHang(KhachHangID) ON DELETE CASCADE ON UPDATE CASCADE,
 );
+
 create table ChiTietHoaDonBan(
 MaChiTietHoaDonBan int identity(1,1) not null primary key,
 MaHoaDonBan int,
 MatHangID char(10),
 SoLuong int, 
 GiaBan float,
+TongGia int,
 FOREIGN KEY (MaHoaDonBan) REFERENCES HoaDonBan (MaHoaDonBan) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (MatHangID) REFERENCES MatHang (MatHangID) ON DELETE CASCADE ON UPDATE CASCADE,
 );
+select * from ChiTietHoaDonBan
 go
 create table DonHangNhap
 (
@@ -217,4 +222,5 @@ VALUES
     ('1', '1', 'Nhat','VanGiang','0987654321'),
 	('2', '2', 'Duc','HungYen','0984654321')
 
+select * from TaiKhoan
 

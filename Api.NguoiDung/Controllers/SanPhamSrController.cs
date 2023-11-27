@@ -29,7 +29,7 @@ namespace Api.NguoiDung.Controllers
         }
         [Route("get-by-lh/{lh}")]
         [HttpGet]
-        public HomeModel GetMH_LH(string lh)
+        public List<HomeModel> GetMH_LH(string lh)
         {
             return _sanphamBusiness.GetMH_LH(lh);
         }
@@ -44,13 +44,37 @@ namespace Api.NguoiDung.Controllers
         [HttpGet]
         public List<HomeModel> GetMH_TopNew(int topnew)
         {
-            return _sanphamBusiness.GetMH_Top(topnew);
+            return _sanphamBusiness.GetMH_TopNew(topnew);
         }
         [Route("get-by-gia/{gia}")]
         [HttpGet]
-        public List<HomeModel> GetMH_Gia(int gia)
+        public List<HomeModel> GetMH_Gia(float gia)
         {
             return _sanphamBusiness.GetMH_Gia(gia);
+        }
+        [Route("getgiaBanMinMax")]
+        [HttpGet]
+        public List<HomeModel> GetMH_giaBanMinMax()
+        {
+            return _sanphamBusiness.GetMH_giaBanMinMax();
+        }
+        [Route("getgiaBanMaxMin")]
+        [HttpGet]
+        public List<HomeModel> GetMH_giaBanMaxMin()
+        {
+            return _sanphamBusiness.GetMH_giaBanMaxMin();
+        }
+        [Route("getgiaBanduoi100k")]
+        [HttpGet]
+        public List<HomeModel> GetMH_giaBan100k()
+        {
+            return _sanphamBusiness.GetMH_giaBan100k();
+        }
+        [Route("getgiaBan100k-200k")]
+        [HttpGet]
+        public List<HomeModel> GetMH_giaBan100k_200k()
+        {
+            return _sanphamBusiness.GetMH_giaBan100k_200k();
         }
     }
 }

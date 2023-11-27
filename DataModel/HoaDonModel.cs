@@ -12,6 +12,7 @@ namespace DataModel
         public string KhachHangID { get; set; }
         public DateTime NgayBan { get; set; }
 
+        public DateTime Ngaytao { get; set; }
         public float ThanhTien { get; set; }
 
         public int status { get; set; }

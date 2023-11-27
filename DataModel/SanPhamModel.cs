@@ -12,7 +12,7 @@ namespace DataModel
         public string DVTinh { get; set; }
         public int SoLuong { get; set; }
         public DateTime NgayTao { get; set; }
-        //public List<MatHangModel> list_json_chitietmathang { get; set; }
+        public string Anh { get; set; }
         
     }
 }

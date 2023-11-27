@@ -16,7 +16,7 @@ namespace DataAccessLayer
             _dbHelper = dbHelper;
         }
  
-        public UserModel GetDatabyID(string id)
+        public TaiKhoanModel GetDatabyID(string id)
         {
             string msgError = "";
             try
@@ -25,19 +25,19 @@ namespace DataAccessLayer
                      "@MaTaiKhoan", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<UserModel>().FirstOrDefault();
+                return dt.ConvertTo<TaiKhoanModel>().FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public bool Create(UserModel model)
+        public bool Create(TaiKhoanModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "userCreate",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "taikhoanCreate",
                 "@MaTaiKhoan", model.MaTaiKhoan,
                 "@MaLoai", model.MaLoai,
                 "@TenTaiKhoan", model.TenTaiKhoan,
@@ -54,12 +54,12 @@ namespace DataAccessLayer
                 throw ex;
             }
         }
-        public bool Update(UserModel model)
+        public bool Update(TaiKhoanModel model)
         {
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "userUpdate",
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "taikhoanUp",
 
                 "@MaTaiKhoan", model.MaTaiKhoan,
                 "@MaLoai", model.MaLoai,
@@ -83,7 +83,7 @@ namespace DataAccessLayer
             bool kq; 
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "userDelete",
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "taikhoanDel",
                      "@MaTaiKhoan", id);
            
                 if (Convert.ToInt32(result) > 0)

@@ -40,6 +40,7 @@ namespace DataAccessLayer
                 var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadonCreate",
                 "@KhachHangID", model.KhachHangID,
                  "@NgayBan", model.NgayBan,
+                 "@Ngaytao", model.Ngaytao,
                 "@ThanhTien", model.ThanhTien,
                 "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
@@ -62,6 +63,7 @@ namespace DataAccessLayer
                 "@MaHoaDonBan", model.MaHoaDonBan,
                 "@KhachHangID", model.KhachHangID,
                  "@NgayBan", model.NgayBan,
+                 "@Ngaytao", model.Ngaytao,
                 "@ThanhTien", model.ThanhTien,
                 "@list_json_chitietdonhangban", model.list_json_chitietdonhangban != null ? MessageConvert.SerializeObject(model.list_json_chitietdonhangban) : null);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
@@ -82,7 +84,7 @@ namespace DataAccessLayer
             total = 0;
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_thong_ke_khach",
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "hoadonSearch",
                     "@page_index", pageIndex,
                     "@page_size", pageSize,
                     "@ten_khach", ten_khach,
@@ -105,7 +107,7 @@ namespace DataAccessLayer
             bool kq; 
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "XoaHoaDonBan",
+                var result = _dbHelper.ExecuteScalarSProcedure(out msgError, "hoadonDel",
                      "@MaHoaDonBan", id);
               
                 if (Convert.ToInt32(result) > 0)

@@ -8,13 +8,13 @@ namespace DataModel
 {
     public class ThongKeKhachModel
     {
-        public int MaSanPham { get; set; }
-        public string TenSanPham { get; set; }
+        public string MatHangID { get; set; }
+        public string TenHang { get; set; }
         public int SoLuong { get; set; }
-        public Decimal TongGia { get; set; }
+        public int TongGia { get; set; }
         public DateTime NgayTao { get; set; }
-        public string TenKH { get; set; }
-        public string Diachi { get; set; }
+        public string HoTenKH { get; set; }
+        public string DiaChiKH { get; set; }
     }
      
 }

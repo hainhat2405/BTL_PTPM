@@ -1,6 +1,6 @@
-﻿Use BTL_PTPM_BanhKeo
+﻿   Use BTL_PTPM_BanhKeo
 ----------- tìm id khách hàng------------
-CREATE PROCEDURE TimKiemKhachHangTheoID
+create PROCEDURE KhachHangID
     @KhachHangID char(10)
 AS
 BEGIN
@@ -9,9 +9,11 @@ BEGIN
     WHERE KhachHangID = @KhachHangID
 END
 
+
+select * from ChiTietHoaDonBan
 	---------------  Thêm khách hàng --------------
 GO
-CREATE PROCEDURE ThemKhachHang
+CREATE PROCEDURE KhachHangCreate
     @KhachHangID char(10),
     @HoTenKH nvarchar(30),
     @DiaChiKH nvarchar(50),
@@ -25,7 +27,7 @@ END
 
 
 ---------- cập nhật thông tin khách hàng-------------
-CREATE PROCEDURE CapNhatKhachHang
+CREATE PROCEDURE	
     @KhachHangID char(10),
     @HoTenKH nvarchar(30),
     @DiaChiKH nvarchar(50),
@@ -43,7 +45,7 @@ BEGIN
         KhachHangID = @KhachHangID
 END
 -----------------xóa thông tin khách hàng------------------------
-CREATE PROCEDURE XoaKhachHang
+CREATE PROCEDURE KhachHangDel
     @KhachHangID char(10)
 AS
 BEGIN
@@ -53,7 +55,7 @@ END
 
 ----------------------------------------------------
 
-create PROCEDURE khachSreach (@page_index  INT, 
+alter PROCEDURE khachSreach (@page_index  INT, 
                                        @page_size   INT,
 									   @ten_khach Nvarchar(50),
 									   @dia_chi Nvarchar(250)
@@ -68,7 +70,9 @@ AS
                               ORDER BY HoTenKH ASC)) AS RowNumber, 
                               k.KhachHangID,
 							  k.HoTenKH,
-							  k.DiaChiKH
+							  k.DiaChiKH,
+							  k.SdtKH,
+							  k.EmailKH
                         INTO #Results1
                         FROM KhachHang AS k
 					    WHERE  (@ten_khach = '' Or k.HoTenKH like N'%'+@ten_khach+'%') and						
@@ -89,7 +93,9 @@ AS
                               ORDER BY HoTenKH ASC)) AS RowNumber, 
                               k.KhachHangID,
 							  k.HoTenKH,
-							  k.DiaChiKH
+							  k.DiaChiKH,
+							   k.SdtKH,
+							  k.EmailKH
                         INTO #Results2
                         FROM KhachHang AS k
 					    WHERE  (@ten_khach = '' Or k.HoTenKH like N'%'+@ten_khach+'%') and						
@@ -105,6 +111,62 @@ AS
 
 -- Execute the stored procedure
 EXEC khachSreach  @page_index = 1,@page_size= 10, @ten_khach= N'Nguyễn Thị A',@dia_chi= N'Hà Nội';
+
+---------------------Nhân viên-----------------------------------------
+-- tìm kiếm id của nhân viên.
+CREATE PROCEDURE nhanvienID
+    @NhanVienID char(10)
+AS
+BEGIN
+    SELECT *
+    FROM NhanVien
+    WHERE NhanVienID = @NhanVienID;
+END
+
+
+-- tạo nhân viên
+CREATE PROCEDURE nhanvienCreate
+    @NhanVienID char(10),
+    @HoTenNV nvarchar(30),
+    @GioiTinhNV nvarchar(50),
+    @NgaySinhNV date,
+    @DiaChiNV nvarchar(50),
+    @EmailNV char(30),
+    @SdtNV char(10),
+    @Matkhau char(10)
+AS
+BEGIN
+    INSERT INTO NhanVien (NhanVienID, HoTenNV, GioiTinhNV, NgaySinhNV, DiaChiNV, EmailNV, SdtNV, Matkhau)
+    VALUES (@NhanVienID, @HoTenNV, @GioiTinhNV, @NgaySinhNV, @DiaChiNV, @EmailNV, @SdtNV, @Matkhau);
+END
+
+-- sửa thông tin nhân viên
+CREATE PROCEDURE nhanvienUp
+    @NhanVienID char(10),
+    @HoTenNV nvarchar(30),
+    @GioiTinhNV nvarchar(50),
+    @NgaySinhNV date,
+    @DiaChiNV nvarchar(50),
+    @EmailNV char(30),
+    @SdtNV char(10),
+    @Matkhau char(10)
+AS
+BEGIN
+    UPDATE NhanVien
+    SET HoTenNV = @HoTenNV, GioiTinhNV = @GioiTinhNV, NgaySinhNV = @NgaySinhNV, DiaChiNV = @DiaChiNV,
+        EmailNV = @EmailNV, SdtNV = @SdtNV, Matkhau = @Matkhau
+    WHERE NhanVienID = @NhanVienID;
+END
+
+--xóa thông tin nhân viên
+CREATE PROCEDURE nhanvienDel
+    @NhanVienID char(10)
+AS
+BEGIN
+    DELETE FROM NhanVien
+    WHERE NhanVienID = @NhanVienID;
+END
+
 
 	---------------------Hóa Đơn -------------------------
 create PROCEDURE hoadonID
@@ -231,8 +293,9 @@ AS
         SELECT '';
     END;
 
+	
 	-- Tạo thủ tục xóa HoaDonBan
-CREATE PROCEDURE XoaHoaDonBan
+CREATE PROCEDURE hoadonDel
     @MaHoaDonBan int
 AS
 BEGIN
@@ -253,16 +316,105 @@ BEGIN
     END
 END
 
+----- search hóa đơn
+GO
+create PROCEDURE hoadonSearch (@page_index  INT, 
+                                       @page_size   INT,
+									   @ten_khach Nvarchar(50),
+									   @fr_NgayTao datetime, 
+									   @to_NgayTao datetime
+									   )
+AS
+    BEGIN
+        DECLARE @RecordCount BIGINT;
+        IF(@page_size <> 0)
+            BEGIN
+						SET NOCOUNT ON;
+                        SELECT(ROW_NUMBER() OVER(
+                              ORDER BY h.NgayTao ASC)) AS RowNumber, 
+                              mh.MatHangID,
+							  mh.TenHang,
+							  c.SoLuong,
+							  c.TongGia,
+							  mh.NgayTao,
+							  kh.HoTenKH,
+							  kh.DiaChiKH
+                        INTO #Results1
+                        FROM HoaDonBan  h
+						inner join ChiTietHoaDonBan c on c.MaHoaDonBan = h.MaHoaDonBan
+						inner join MatHang mh on mh.MatHangID = c.MatHangID
+						inner join KhachHang kh on kh.KhachHangID = h.KhachHangID
+					    WHERE  (@ten_khach = '' Or kh.HoTenKH like N'%'+@ten_khach+'%') and						
+						((@fr_NgayTao IS NULL
+                        AND @to_NgayTao IS NULL)
+                        OR (@fr_NgayTao IS NOT NULL
+                            AND @to_NgayTao IS NULL
+                            AND mh.NgayTao >= @fr_NgayTao)
+                        OR (@fr_NgayTao IS NULL
+                            AND @to_NgayTao IS NOT NULL
+                            AND mh.NgayTao <= @to_NgayTao)
+                        OR (mh.NgayTao BETWEEN @fr_NgayTao AND @to_NgayTao))              
+                        SELECT @RecordCount = COUNT(*)
+                        FROM #Results1;
+                        SELECT *, 
+                               @RecordCount AS RecordCount
+                        FROM #Results1
+                        WHERE ROWNUMBER BETWEEN(@page_index - 1) * @page_size + 1 AND(((@page_index - 1) * @page_size + 1) + @page_size) - 1
+                              OR @page_index = -1;
+                        DROP TABLE #Results1; 
+            END;
+            ELSE
+            BEGIN
+						SET NOCOUNT ON;
+                        SELECT(ROW_NUMBER() OVER(
+                              ORDER BY h.NgayTao ASC)) AS RowNumber, 
+                              mh.MatHangID,
+							  mh.TenHang,
+							  c.SoLuong,
+							  c.TongGia,
+							  mh.NgayTao,
+							  kh.HoTenKH,
+							  kh.DiaChiKH
+                        INTO #Results2
+                        FROM HoaDonBan  h
+						inner join ChiTietHoaDonBan c on c.MaHoaDonBan = h.MaHoaDonBan
+						inner join MatHang mh on mh.MatHangID = c.MatHangID
+						inner join KhachHang kh on kh.KhachHangID = h.KhachHangID
+					    WHERE  (@ten_khach = '' Or kh.HoTenKH like N'%'+@ten_khach+'%') and							
+						((@fr_NgayTao IS NULL
+                        AND @to_NgayTao IS NULL)
+                        OR (@fr_NgayTao IS NOT NULL
+                            AND @to_NgayTao IS NULL
+                            AND mh.NgayTao >= @fr_NgayTao)
+                        OR (@fr_NgayTao IS NULL
+						AND @to_NgayTao IS NOT NULL
+                            AND mh.NgayTao <= @to_NgayTao)
+                        OR (mh.NgayTao BETWEEN @fr_NgayTao AND @to_NgayTao))              
+                        SELECT @RecordCount = COUNT(*)
+                        FROM #Results2;
+                        SELECT *, 
+                               @RecordCount AS RecordCount
+                        FROM #Results2                        
+                        DROP TABLE #Results2; 
+        END;
+    END;
 
-select * from HoaDonBan
-select * from ChiTietHoaDonBan
-exec XoaHoaDonBan'8'
+	EXEC hoadonSearch
+    @page_index = 1,  -- Thay thế giá trị này bằng trang muốn truy vấn
+    @page_size = 10,  -- Thay thế giá trị này bằng số lượng bản ghi trên mỗi trang
+    @ten_khach = 'A',  -- Thay thế bằng tên khách hàng cần tìm kiếm
+    @fr_NgayTao = '2020-01-01',  -- Thay thế bằng ngày bắt đầu của khoảng thời gian
+    @to_NgayTao = '2023-12-31'  -- Thay thế bằng ngày kết thúc của khoảng thời gian
 
+	select * from KhachHang
+	select * from MatHang
+	select * from HoaDonBan
+	select * from ChiTietHoaDonBan
 
 -------------------MatHang-----------------
 -----------------------------------
-create procedure mathangid
-(@MatHangID int)
+alter procedure mathangid
+(@MatHangID char(10))
 as
 begin
 	Select * 
@@ -270,6 +422,7 @@ begin
 		where MatHangID =@MatHangID
 end;
 
+exec mathangid 'MH001'
 ---------------------------------------
 alter PROCEDURE mathangCreate 
 	
@@ -278,14 +431,18 @@ alter PROCEDURE mathangCreate
 @TenHang nvarchar(50),
 @DVTinh nvarchar(10),
 @SoLuong tinyint,
-@NgayTao datetime
+@NgayTao datetime,
+@Anh nvarchar(200)
 )
 as 
 	begin
-		Insert into MatHang(LoaiHangID, MatHangID, TenHang, DVTinh, SoLuong, NgayTao )
-		values (@LoaiHangID, @MatHangID, @TenHang, @DVTinh, @SoLuong, @NgayTao);
+		Insert into MatHang(LoaiHangID, MatHangID, TenHang, DVTinh, SoLuong, NgayTao,Anh )
+		values (@LoaiHangID, @MatHangID, @TenHang, @DVTinh, @SoLuong, @NgayTao,@Anh);
 	end;
 go
+
+
+
 
 select * from MatHang
 	-----------------------------------------
@@ -295,7 +452,8 @@ alter PROCEDURE mathangUpdate
 @TenHang nvarchar(50),
 @DVTinh nvarchar(10),
 @SoLuong tinyint,
-@NgayTao datetime)
+@NgayTao datetime,
+@Anh nvarchar(200))
 AS
 BEGIN
     UPDATE MatHang
@@ -305,7 +463,8 @@ BEGIN
         TenHang = @TenHang,
         DVTinh = @DVTinh,
 		SoLuong = @SoLuong,
-		NgayTao = @NgayTao
+		NgayTao = @NgayTao,
+		Anh =  @Anh
     WHERE
         MatHangID = @MatHangID
 END
@@ -342,7 +501,7 @@ END
 
 exec taikhoanID '1'
 
-CREATE PROCEDURE userCreate
+CREATE PROCEDURE taikhoanCreate
     @MaTaiKhoan int,
     @MaLoai int,
     @TenTaiKhoan nvarchar(50),
@@ -354,9 +513,9 @@ BEGIN
     VALUES (@MaTaiKhoan, @MaLoai, @TenTaiKhoan, @MatKhau, @Email)
 END
 
-
+drop proc userUpdate
 ---------- cập nhật thông tin khách hàng-------------
-CREATE PROCEDURE userUpdate
+CREATE PROCEDURE taikhoanUp
     @MaTaiKhoan int,
     @MaLoai int,
     @TenTaiKhoan nvarchar(50),
@@ -373,8 +532,9 @@ BEGIN
     WHERE
         MaTaiKhoan = @MaTaiKhoan
 END
+
 -----------------xóa thông tin khách hàng------------------------
-CREATE PROCEDURE userDelete
+CREATE PROCEDURE taikhoanDel
     @MaTaiKhoan int
 AS
 BEGIN
@@ -382,13 +542,17 @@ BEGIN
     WHERE MaTaiKhoan = @MaTaiKhoan
 END
 
-create procedure mathang_getAll
-as
-	begin
-		select * from MatHang
-	end;
-go
-exec mathang_getAll
+---------------------------User-----------------------------
+
+create PROCEDURE getAllMH
+AS
+BEGIN
+    SELECT MH.LoaiHangID,MH.MatHangID, MH.DVTinh,MH.SoLuong,MH.Anh, MH.TenHang, CT.GiaBan, SUM(CT.SoLuong) AS SoLuongDaBan
+    FROM MatHang AS MH
+    INNER JOIN ChiTietHoaDonBan AS CT ON MH.MatHangID = CT.MatHangID
+    GROUP BY MH.LoaiHangID,MH.MatHangID, MH.DVTinh,MH.SoLuong,MH.Anh, MH.TenHang, CT.GiaBan
+    ORDER BY MH.TenHang;
+END;
 
 alter PROCEDURE TimMatHangTheoTenHang
      @TenHang nvarchar(50)
@@ -401,7 +565,7 @@ BEGIN
     WHERE mh.TenHang = @TenHang;
 END;
 select * from MatHang
-exec TimMatHangTheoTenHang N'Bánh O'
+exec TimMatHangTheoTenHang N'Sấu Xào Gừng Tiến Thịnh'
 
 ------------------------
 
@@ -432,24 +596,25 @@ ALTER PROCEDURE SearchMatHangByLoaiHang
     @LoaiHangID CHAR(10)
 AS
 BEGIN
-    SELECT mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, ISNULL(ct.GiaBan, 0) AS GiaBan, ISNULL(SUM(ct.SoLuong), 0) AS SoLuongDaBan
+    SELECT mh.LoaiHangID,mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, ISNULL(ct.GiaBan, 0) AS GiaBan, ISNULL(SUM(ct.SoLuong), 0) AS SoLuongDaBan,mh.Anh
     FROM MatHang AS mh
     LEFT JOIN ChiTietHoaDonBan AS ct ON mh.MatHangID = ct.MatHangID
     WHERE mh.LoaiHangID = @LoaiHangID
-    GROUP BY mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, ct.GiaBan;
+    GROUP BY mh.LoaiHangID,mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, ct.GiaBan,mh.Anh;
 END;
 
 EXEC SearchMatHangByLoaiHang @LoaiHangID = 'LH001';
 
+---------------sản phẩm bán chạy nhất--------------
 alter PROCEDURE TopSellingProduct
 (@soluong int)
 AS
 BEGIN
-    SELECT TOP (@soluong) MH.MatHangID,MH.LoaiHangID, LH.TenLH, MH.TenHang, MH.DVTinh,MH.SoLuong, SUM(CTHDB.SoLuong) AS SoLuongDaBan, CTHDB.GiaBan
+    SELECT TOP (@soluong) MH.MatHangID,MH.LoaiHangID, LH.TenLH, MH.TenHang, MH.DVTinh,MH.SoLuong, MH.Anh,SUM(CTHDB.SoLuong) AS SoLuongDaBan, CTHDB.GiaBan
     FROM MatHang AS MH
     INNER JOIN ChiTietHoaDonBan AS CTHDB ON MH.MatHangID = CTHDB.MatHangID
     INNER JOIN LoaiHang AS LH ON MH.LoaiHangID = LH.LoaiHangID
-    GROUP BY MH.MatHangID,MH.LoaiHangID, LH.TenLH, MH.TenHang, MH.DVTinh, MH.SoLuong,CTHDB.GiaBan
+    GROUP BY MH.MatHangID,MH.LoaiHangID, LH.TenLH, MH.TenHang, MH.DVTinh, MH.SoLuong,MH.Anh,CTHDB.GiaBan
     ORDER BY SoLuongDaBan DESC;
 END;
 
@@ -457,59 +622,103 @@ END;
 select * from MatHang
 select * from ChiTietHoaDonBan
 
-exec TopSellingProduct '1';
+exec TopSellingProduct '3';
 
-alter PROCEDURE TimSanPhamTheoGiaBan
+---------------tìm kiếm sản phẩm theo giá bán--------------
+ALTER PROCEDURE TimSanPhamTheoGiaBan
 (
     @GiaBan int
 )
 AS
 BEGIN
-    SELECT mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao, cthdb.GiaBan
+    SELECT mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong AS SoLuong, mh.NgayTao, cthdb.GiaBan, SUM(cthdb.SoLuong) AS SoLuongDaBan
     FROM MatHang AS mh
     INNER JOIN ChiTietHoaDonBan AS cthdb ON mh.MatHangID = cthdb.MatHangID
-    WHERE cthdb.GiaBan >= @GiaBan;
+    WHERE cthdb.GiaBan >= @GiaBan
+    GROUP BY mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao, cthdb.GiaBan
+    ORDER BY mh.TenHang;
 END;
 
-exec TimSanPhamTheoGiaBan '3';
-
-
-
-alter PROCEDURE SearchMatHangByPrice
-    @GiaBan float
+create PROCEDURE TimSanPhamDuoiGia100000
 AS
 BEGIN
-    SELECT mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao, c.GiaBan
+    SELECT mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong AS SoLuong, mh.NgayTao, cthdb.GiaBan, SUM(cthdb.SoLuong) AS SoLuongDaBan
     FROM MatHang AS mh
-    INNER JOIN ChiTietHoaDonBan AS c ON mh.MatHangID = c.MatHangID
-    WHERE c.GiaBan >= @GiaBan;
+    INNER JOIN ChiTietHoaDonBan AS cthdb ON mh.MatHangID = cthdb.MatHangID
+    WHERE cthdb.GiaBan < 100000 -- Lấy các sản phẩm có giá dưới 50000
+    GROUP BY mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao, cthdb.GiaBan
+    ORDER BY mh.TenHang;
 END;
 
-EXEC SearchMatHangByPrice @GiaBan = 300000; -- Tìm sản phẩm có giá bán lớn hơn hoặc bằng 50.00
+ALTER PROCEDURE TimSanPhamGia100000_200000
+AS
+BEGIN
+    SELECT mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong AS SoLuong, mh.NgayTao, cthdb.GiaBan, SUM(cthdb.SoLuong) AS SoLuongDaBan
+    FROM MatHang AS mh
+    INNER JOIN ChiTietHoaDonBan AS cthdb ON mh.MatHangID = cthdb.MatHangID
+    WHERE cthdb.GiaBan >= 100000 and  cthdb.GiaBan <= 200000-- Lấy các sản phẩm có giá dưới 50000
+    GROUP BY mh.LoaiHangID, mh.Anh, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao, cthdb.GiaBan
+    ORDER BY mh.TenHang;
+END;
 
 
 
 
+exec TimSanPhamTheoGiaBan '1';
 
+select * from MatHang
 
 
 ---- Top những sản phẩm mới nhất
-alter PROCEDURE GetTopNNewestMatHang(@New int)
+create PROCEDURE GetTopNNewestMatHang(@New int)
 AS
 BEGIN
-    SELECT TOP (@New)mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,  ct.GiaBan
+    SELECT TOP (@New)mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,  ct.GiaBan,
     FROM MatHang as mh, ChiTietHoaDonBan as ct
     ORDER BY NgayTao DESC;
 END;
 
-select * from MatHang
-exec GetTopNNewestMatHangWithPrice 3
 
-CREATE PROCEDURE GetTopNNewestMatHangWithPrice(@N int)
+exec giaBanMaxMin;
+
+select * from MatHang
+
+alter PROCEDURE giaBanMinMax
 AS
 BEGIN
-    SELECT TOP (@N) M.*, C.GiaBan
-    FROM MatHang AS M
-    INNER JOIN ChiTietHoaDonBan AS C ON M.MatHangID = C.MatHangID
-    ORDER BY M.NgayTao DESC;
+    SELECT mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,mh.Anh,  CHDB.GiaBan,
+           ISNULL(SUM(CHDB.SoLuong), 0) AS SoLuongDaBan
+    FROM ChiTietHoaDonBan CHDB
+    INNER JOIN MatHang MH ON CHDB.MatHangID = MH.MatHangID
+    LEFT JOIN HoaDonBan HDB ON CHDB.MaHoaDonBan = HDB.MaHoaDonBan
+    GROUP BY mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,mh.Anh,  CHDB.GiaBan
+    ORDER BY CHDB.GiaBan ASC;
 END;
+
+alter PROCEDURE giaBanMaxMin
+AS
+BEGIN
+    SELECT mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,mh.Anh,  CHDB.GiaBan,
+           ISNULL(SUM(CHDB.SoLuong), 0) AS SoLuongDaBan
+    FROM ChiTietHoaDonBan CHDB
+    INNER JOIN MatHang MH ON CHDB.MatHangID = MH.MatHangID
+    LEFT JOIN HoaDonBan HDB ON CHDB.MaHoaDonBan = HDB.MaHoaDonBan
+    GROUP BY mh.LoaiHangID, mh.MatHangID, mh.TenHang, mh.DVTinh, mh.SoLuong, mh.NgayTao,mh.Anh,  CHDB.GiaBan
+    ORDER BY CHDB.GiaBan DESC;
+END;
+
+CREATE PROCEDURE FindTopNewProducts
+    @TopProducts int
+AS
+BEGIN
+    SELECT TOP(@TopProducts) mh.*, cthdb.SoLuong AS SoLuongDaBan, cthdb.GiaBan
+    FROM MatHang mh
+    LEFT JOIN (
+        SELECT MatHangID, SUM(SoLuong) AS SoLuong, AVG(GiaBan) AS GiaBan
+        FROM ChiTietHoaDonBan
+        GROUP BY MatHangID
+    ) cthdb ON mh.MatHangID = cthdb.MatHangID
+    ORDER BY mh.NgayTao DESC;
+END;
+
+exec FindTopNewProducts 6
