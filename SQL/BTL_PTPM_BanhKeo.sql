@@ -15,8 +15,12 @@ create table MatHang
 	MatHangID char(10) primary key,
 	TenHang nvarchar(50),
 	DVTinh nvarchar(10),
-	SLTon tinyint,
+	SoLuong tinyint,
+	NgayTao datetime
 )
+ALTER TABLE MatHang
+
+ADD NgayTao datetime;
 go
 create table NhanVien
 (
@@ -119,12 +123,10 @@ VALUES
     ('LH004', N'Bánh Bauli Moonfils Vị Vani 45G'),
     ('LH005', N'Bánh Bauli Moonfils Vị Dâu 45G')
 
-INSERT INTO MatHang (LoaiHangID, MatHangID, TenHang, DVTinh, SLTon)
+INSERT INTO MatHang (LoaiHangID, MatHangID, TenHang, DVTinh, SoLuong)
 VALUES
     ('LH001', 'MH001', N'Bánh Quy Homey Mè Gói 100g', N'Gói', 20),
-    ('LH001', 'MH002', N'Snack Lays Vị Khoai Tây Tự Nhiên Classic Gói 95g', N'Gói', 15),
     ('LH002', 'MH003', N'Snack Bắp Oishi Cay 4 Lớp Sốt Sriracha 39G', N'Gói', 10),
-    ('LH002', 'MH004', N'Bánh Bauli Moonfils Vị Vani 45G', N'Gói', 12),
     ('LH003', 'MH005', N'Bánh Bauli Moonfils Vị Dâu 45G', N'Gói', 8)
 
 

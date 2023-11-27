@@ -33,7 +33,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<SanPhamModel> GetAllMH()
+        public List<HomeModel> GetAllMH()
         {
             string msgError = "";
             try
@@ -41,7 +41,7 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "mathang_getAll");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<SanPhamModel>().ToList();
+                return dt.ConvertTo<HomeModel>().ToList();
             }
             catch (Exception ex)
             {
@@ -49,22 +49,8 @@ namespace DataAccessLayer
             }
         }
 
-        public List<SanPhamModel> GetMH_Top()
-        {
-            string msgError = "";
-            try
-            {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TopSellingProduct");
-                if (!string.IsNullOrEmpty(msgError))
-                    throw new Exception(msgError);
-                return dt.ConvertTo<SanPhamModel>().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public SanPhamModel GetMH_Ten(string name)
+      
+        public HomeModel GetMH_Ten(string name)
         {
             string msgError = "";
             try
@@ -73,7 +59,7 @@ namespace DataAccessLayer
                      "@TenHang", name);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<SanPhamModel>().FirstOrDefault();
+                return dt.ConvertTo<HomeModel>().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -81,7 +67,7 @@ namespace DataAccessLayer
             }
         }
 
-        public SanPhamModel GetMH_LH(string lh)
+        public HomeModel GetMH_LH(string lh)
         {
             string msgError = "";
             try
@@ -90,7 +76,58 @@ namespace DataAccessLayer
                      "@LoaiHangID", lh);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<SanPhamModel>().FirstOrDefault();
+                return dt.ConvertTo<HomeModel>().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<HomeModel> GetMH_Top(int top)
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TopSellingProduct",
+                     "@soluong", top);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<HomeModel> GetMH_Gia(int gia)
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "SearchMatHangByPrice",
+                     "@GiaBan", gia);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<HomeModel> GetMH_TopNew(int topnew)
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "GetTopNNewestMatHangWithPrice",
+                     "@New", topnew);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HomeModel>().ToList();
             }
             catch (Exception ex)
             {
@@ -106,10 +143,11 @@ namespace DataAccessLayer
             {
                 var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangCreate",
                 "@LoaiHangID", model.LoaiHangID,
-                "@MatHangId", model.MatHangId,
+                "@MatHangID", model.MatHangID,
                 "@TenHang", model.TenHang,
                 "@DVTinh", model.DVTinh,
-                "@SLTon", model.SLTon);
+                "@SoLuong", model.SoLuong,
+                "@NgayTao", model.NgayTao);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);
@@ -127,11 +165,12 @@ namespace DataAccessLayer
             try
             {
                 var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "mathangUpdate",
-                "@MatHangId", model.MatHangId,
+                "@MatHangID", model.MatHangID,
                 "@LoaiHangID", model.LoaiHangID,
                 "@TenHang", model.TenHang,
                 "@DVTinh", model.DVTinh,
-                "@SLTon", model.SLTon);
+                "@SoLuong", model.SoLuong,
+                "@NgayTao", model.NgayTao);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);

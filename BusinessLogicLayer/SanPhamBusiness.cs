@@ -21,21 +21,29 @@ namespace BusinessLogicLayer
         {
             return _res.GetChiTietMatHang(id);
         }
-        public List<SanPhamModel> GetAllMH()
+        public List<HomeModel> GetAllMH()
         {
             return _res.GetAllMH();
         }
-        public List<SanPhamModel> GetMH_Top()
-        {
-            return _res.GetMH_Top();
-        }
-        public SanPhamModel GetMH_Ten(string name)
+        public HomeModel GetMH_Ten(string name)
         {
             return _res.GetMH_Ten(name);
         }
-        public SanPhamModel GetMH_LH(string lh)
+        public HomeModel GetMH_LH(string lh)
         {
             return _res.GetMH_LH(lh);
+        }
+        public List<HomeModel> GetMH_Top(int top)
+        {
+            return _res.GetMH_Top(top);
+        }
+        public List<HomeModel> GetMH_TopNew(int topnew)
+        {
+            return _res.GetMH_Top(topnew);
+        }
+        public List<HomeModel> GetMH_Gia(int gia)
+        {
+            return _res.GetMH_Top(gia);
         }
         public bool Create(SanPhamModel model)
         {

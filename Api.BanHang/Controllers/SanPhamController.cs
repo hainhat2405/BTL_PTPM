@@ -10,42 +10,36 @@ namespace Api.BanHang.Controllers
     [ApiController]
     public class SanPhamController : ControllerBase
     {
-        private ISanPhamBusiness _mathangBusiness;
+        private ISanPhamBusiness _sanphamBusiness;
         public SanPhamController(ISanPhamBusiness mathangBusiness)
         {
-            _mathangBusiness = mathangBusiness;
+            _sanphamBusiness = mathangBusiness;
         }
         [Route("get-by-id/{id}")]
         [HttpGet]
         public SanPhamModel GetChiTietMatHang(string id)
         {
-            return _mathangBusiness.GetChiTietMatHang(id);
-        } 
-        [Route("get-by-id/{id}")]
-        [HttpGet]
-        public SanPhamModel GetChiTietMatHang(string id)
-        {
-            return _mathangBusiness.GetChiTietMatHang(id);
+            return _sanphamBusiness.GetChiTietMatHang(id);
         }
-        [Route("create-mathang")]
+        [Route("create-sanpham")]
         [HttpPost]
         public SanPhamModel CreateItem([FromBody] SanPhamModel model)
         {
-            _mathangBusiness.Create(model);
+            _sanphamBusiness.Create(model);
             return model;
         }
-        [Route("update-mathang")]
+        [Route("update-sanpham")]
         [HttpPost]
         public SanPhamModel UpdateItem([FromBody] SanPhamModel model)
         {
-            _mathangBusiness.Update(model);
+            _sanphamBusiness.Update(model);
             return model;
         }
-        [Route("delete-mathang")]
+        [Route("delete-sanpham")]
         [HttpDelete]
         public IActionResult DeleteItem(string id)
         {
-            _mathangBusiness.Delete(id);
+            _sanphamBusiness.Delete(id);
             return Ok(id);
         }
     }

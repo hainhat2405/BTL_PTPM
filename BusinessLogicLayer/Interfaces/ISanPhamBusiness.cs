@@ -10,10 +10,12 @@ namespace BusinessLogicLayer.Interfaces
     public partial interface ISanPhamBusiness
     {
         SanPhamModel GetChiTietMatHang(string id);
-        List<SanPhamModel> GetAllMH();
-        List<SanPhamModel> GetMH_Top();
-        SanPhamModel GetMH_Ten(string name);
-        SanPhamModel GetMH_LH(string lh);
+        List<HomeModel> GetAllMH();
+        HomeModel GetMH_Ten(string name);
+        HomeModel GetMH_LH(string lh);
+        List<HomeModel> GetMH_Top(int top);
+        List<HomeModel> GetMH_TopNew(int topnew);
+        List<HomeModel> GetMH_Gia(int gia);
         bool Create(SanPhamModel model);
         bool Update(SanPhamModel model);
         bool Delete(string id);

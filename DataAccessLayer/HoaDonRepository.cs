@@ -58,8 +58,8 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadonUp",
-                "@MaHoaDon", model.MaHoaDonBan,
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "hoadonUpdate",
+                "@MaHoaDonBan", model.MaHoaDonBan,
                 "@KhachHangID", model.KhachHangID,
                  "@NgayBan", model.NgayBan,
                 "@ThanhTien", model.ThanhTien,

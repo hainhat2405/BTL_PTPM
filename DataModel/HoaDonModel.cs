@@ -23,6 +23,6 @@ namespace DataModel
         public int MaHoaDonBan { get; set; }
         public string MatHangID { get; set; }
         public int SoLuong { get; set; }
-        public int DonGia { get; set; }
+        public int GiaBan { get; set; }
     }
 }

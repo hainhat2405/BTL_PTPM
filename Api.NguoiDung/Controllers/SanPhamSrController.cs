@@ -10,34 +10,47 @@ namespace Api.NguoiDung.Controllers
     [ApiController]
     public class SanPhamSrController : ControllerBase
     {
-        private ISanPhamBusiness _matHangBusiness;
+        private ISanPhamBusiness _sanphamBusiness;
         public SanPhamSrController(ISanPhamBusiness matHangBusiness)
         {
-            _matHangBusiness = matHangBusiness;
+            _sanphamBusiness = matHangBusiness;
         }
         [Route("getAllMatHang")]
         [HttpGet]   
-        public List<SanPhamModel> GetAllMH()
+        public List<HomeModel> GetAllMH()
         {
-            return _matHangBusiness.GetAllMH();
-        }
-        [Route("getMH_Top")]
-        [HttpGet]
-        public List<SanPhamModel> GetMH_Top()
-        {
-            return _matHangBusiness.GetMH_Top();
+            return _sanphamBusiness.GetAllMH();
         }
         [Route("get-by-name/{name}")]
         [HttpGet]
-        public SanPhamModel GetMH_Ten(string name)
+        public HomeModel GetMH_Ten(string name)
         {
-            return _matHangBusiness.GetMH_Ten(name);
+            return _sanphamBusiness.GetMH_Ten(name);
         }
         [Route("get-by-lh/{lh}")]
         [HttpGet]
-        public SanPhamModel GetMH_LH(string lh)
+        public HomeModel GetMH_LH(string lh)
         {
-            return _matHangBusiness.GetMH_LH(lh);
+            return _sanphamBusiness.GetMH_LH(lh);
+        }
+        [Route("get-by-top số lượng/{top}")]
+        [HttpGet]
+        public List<HomeModel> GetMH_Top(int top)
+        {
+            return _sanphamBusiness.GetMH_Top(top);
+        }
+
+        [Route("get-by-top mới nhất/{topnew}")]
+        [HttpGet]
+        public List<HomeModel> GetMH_TopNew(int topnew)
+        {
+            return _sanphamBusiness.GetMH_Top(topnew);
+        }
+        [Route("get-by-gia/{gia}")]
+        [HttpGet]
+        public List<HomeModel> GetMH_Gia(int gia)
+        {
+            return _sanphamBusiness.GetMH_Gia(gia);
         }
     }
 }
