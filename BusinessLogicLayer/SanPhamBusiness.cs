@@ -21,43 +21,43 @@ namespace BusinessLogicLayer
         {
             return _res.GetChiTietMatHang(id);
         }
-        public List<HomeModel> GetAllMH()
+        public List<SanPhamUser> GetAllMH()
         {
             return _res.GetAllMH();
         }
-        public HomeModel GetMH_Ten(string name)
+        public SanPhamUser GetMH_Ten(string name)
         {
             return _res.GetMH_Ten(name);
         }
-        public List<HomeModel> GetMH_LH(string lh)
+        public List<SanPhamUser> GetMH_LH(string lh)
         {
             return _res.GetMH_LH(lh);
         }
-        public List<HomeModel> GetMH_Top(int top)
+        public List<SanPhamUser> GetMH_Top(int top)
         {
             return _res.GetMH_Top(top);
         }
-        public List<HomeModel> GetMH_TopNew(int topnew)
+        public List<SanPhamUser> GetMH_TopNew(int topnew)
         {
             return _res.GetMH_TopNew(topnew);
         }
-        public List<HomeModel> GetMH_Gia(float gia)
+        public List<SanPhamUser> GetMH_Gia(float gia)
         {
             return _res.GetMH_Gia(gia);
         }
-        public List<HomeModel> GetMH_giaBanMinMax()
+        public List<SanPhamUser> GetMH_giaBanMinMax()
         {
             return _res.GetMH_giaBanMinMax();
         }
-        public List<HomeModel> GetMH_giaBanMaxMin()
+        public List<SanPhamUser> GetMH_giaBanMaxMin()
         {
             return _res.GetMH_giaBanMaxMin();
         }
-        public List<HomeModel> GetMH_giaBan100k()
+        public List<SanPhamUser> GetMH_giaBan100k()
         {
             return _res.GetMH_giaBan100k();
         }
-        public List<HomeModel> GetMH_giaBan100k_200k()
+        public List<SanPhamUser> GetMH_giaBan100k_200k()
         {
             return _res.GetMH_giaBan100k_200k();
         }

@@ -33,7 +33,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetAllMH()
+        public List<SanPhamUser> GetAllMH()
         {
             string msgError = "";
             try
@@ -41,7 +41,7 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "getAllMH");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace DataAccessLayer
         }
 
       
-        public HomeModel GetMH_Ten(string name)
+        public SanPhamUser GetMH_Ten(string name)
         {
             string msgError = "";
             try
@@ -59,7 +59,7 @@ namespace DataAccessLayer
                      "@TenHang", name);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().FirstOrDefault();
+                return dt.ConvertTo<SanPhamUser>().FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_LH(string lh)
+        public List<SanPhamUser> GetMH_LH(string lh)
         {
             string msgError = "";
             try
@@ -76,7 +76,7 @@ namespace DataAccessLayer
                      "@LoaiHangID", lh);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_Top(int top)
+        public List<SanPhamUser> GetMH_Top(int top)
         {
             string msgError = "";
             try
@@ -93,7 +93,7 @@ namespace DataAccessLayer
                      "@soluong", top);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_Gia(float gia)
+        public List<SanPhamUser> GetMH_Gia(float gia)
         {
             string msgError = "";
             try
@@ -110,7 +110,7 @@ namespace DataAccessLayer
                      "@GiaBan", gia);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_TopNew(int topnew)
+        public List<SanPhamUser> GetMH_TopNew(int topnew)
         {
             string msgError = "";
             try
@@ -127,7 +127,7 @@ namespace DataAccessLayer
                      "@TopProducts", topnew);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_giaBanMinMax()
+        public List<SanPhamUser> GetMH_giaBanMinMax()
         {
             string msgError = "";
             try
@@ -143,14 +143,14 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "giaBanMinMax");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public List<HomeModel> GetMH_giaBanMaxMin()
+        public List<SanPhamUser> GetMH_giaBanMaxMin()
         {
             string msgError = "";
             try
@@ -158,7 +158,7 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "giaBanMaxMin");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
@@ -166,7 +166,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<HomeModel> GetMH_giaBan100k()
+        public List<SanPhamUser> GetMH_giaBan100k()
         {
             string msgError = "";
             try
@@ -174,14 +174,14 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimSanPhamDuoiGia100000");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public List<HomeModel> GetMH_giaBan100k_200k()
+        public List<SanPhamUser> GetMH_giaBan100k_200k()
         {
             string msgError = "";
             try
@@ -189,7 +189,7 @@ namespace DataAccessLayer
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "TimSanPhamGia100000_200000");
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
-                return dt.ConvertTo<HomeModel>().ToList();
+                return dt.ConvertTo<SanPhamUser>().ToList();
             }
             catch (Exception ex)
             {

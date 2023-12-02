@@ -25,5 +25,6 @@ namespace DataModel
         public string MatHangID { get; set; }
         public int SoLuong { get; set; }
         public int GiaBan { get; set; }
+        public int TongGia { get; set; }
     }
 }

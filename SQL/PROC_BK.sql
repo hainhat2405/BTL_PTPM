@@ -44,6 +44,7 @@ BEGIN
     WHERE
         KhachHangID = @KhachHangID
 END
+
 -----------------xóa thông tin khách hàng------------------------
 CREATE PROCEDURE KhachHangDel
     @KhachHangID char(10)
@@ -167,11 +168,11 @@ BEGIN
     WHERE NhanVienID = @NhanVienID;
 END
 
-
+SET IDENTITY_INSERT ChiTietHoaDonBan OFF
 	---------------------Hóa Đơn -------------------------
-create PROCEDURE hoadonID
+alter PROCEDURE hoadonID
 (
-    @MaHoaDonBan CHAR(10)
+    @MaHoaDonBan int
 )
 AS
 BEGIN
@@ -187,11 +188,12 @@ END;
 
 select * from HoaDonBan
 select * from ChiTietHoaDonBan
-exec hoadonID '1'
+exec hoadonID 20
 
 alter PROCEDURE hoadonCreate
-(@KhachHangID              NVARCHAR(50),
+(@KhachHangID       NVARCHAR(50),
 @NgayBan			datetime,
+@NgayTao			datetime,
  @ThanhTien          float,
  @list_json_chitietdonhangban NVARCHAR(MAX)
 )
@@ -201,11 +203,13 @@ AS
         INSERT INTO HoaDonBan
                 (KhachHangID , 
 				NgayBan,
+				NgayTao,
                  ThanhTien             
                 )
                 VALUES
                 (@KhachHangID, 
 				@NgayBan, 
+				@NgayTao,
                  @ThanhTien
                 );
 
@@ -216,12 +220,14 @@ AS
 						 (MatHangID, 
 						  MaHoaDonBan,
                           SoLuong, 
-                          GiaBan               
+                          GiaBan,
+						  TongGia
                         )
-                    SELECT JSON_VALUE(p.value, '$.MatHangID'), 
+                    SELECT JSON_VALUE(p.value, '$.matHangID'), 
                             @MaHoaDonBan, 
                             JSON_VALUE(p.value, '$.soLuong'), 
-                            JSON_VALUE(p.value, '$.giaBan')    
+                            JSON_VALUE(p.value, '$.giaBan'),
+							JSON_VALUE(p.value, '$.tongGia')
                     FROM OPENJSON(@list_json_chitietdonhangban) AS p;
                 END;
         SELECT '';
@@ -234,7 +240,8 @@ AS
 alter PROCEDURE hoadonUpdate
 (@MaHoaDonBan        int, 
  @KhachHangID       CHAR(10), 
- @NgayBan          datetime, 
+ @NgayBan          datetime,
+ @NgayTao			datetime,
  @ThanhTien        float,  
  @list_json_chitietdonhangban NVARCHAR(MAX)
 )
@@ -244,6 +251,7 @@ AS
 		SET
 			KhachHangID  = @KhachHangID ,
 			NgayBan = @NgayBan,
+			NgayTao = @NgayTao,
 			ThanhTien = @ThanhTien
 		WHERE MaHoaDonBan = @MaHoaDonBan;
 		
@@ -253,23 +261,27 @@ AS
 		   SELECT
 			  JSON_VALUE(p.value, '$.maChiTietHoaDon') as maChiTietHoaDonBan,
 			  JSON_VALUE(p.value, '$.maHoaDonBan') as maHoaDonBan,
-			  JSON_VALUE(p.value, '$.matHangID') as matHangID,
-			  JSON_VALUE(p.value, '$.soLuong') as soLuong,
-			  JSON_VALUE(p.value, '$.giaBan') as giaBan,
+			  JSON_VALUE(p.value, '$.MatHangID') as matHangID,
+			  JSON_VALUE(p.value, '$.SoLuong') as soLuong,
+			  JSON_VALUE(p.value, '$.GiaBan') as giaBan,
+			  JSON_VALUE(p.value, '$.TongGia') as tongGia,
 			  JSON_VALUE(p.value, '$.status') as status
 			  INTO #Results 
 		   FROM OPENJSON(@list_json_chitietdonhangban) AS p;
 		 
 		 -- Insert data to table with STATUS = 1;
-			INSERT INTO ChiTietHoaDonBan (MatHangID, 
+			INSERT INTO ChiTietHoaDonBan (
+						MatHangID, 
 						  MaHoaDonBan,
                           SoLuong, 
-                          GiaBan ) 
+                          GiaBan,
+						  TongGia) 
 			   SELECT
 				  #Results.matHangID,
 				  @MaHoaDonBan,
 				  #Results.soLuong,
-				  #Results.giaBan			 
+				  #Results.giaBan,
+				  #Results.tongGia	
 			   FROM  #Results 
 			   WHERE #Results.status = '1' 
 			
@@ -278,7 +290,8 @@ AS
 			  SET
 				 MatHangID = #Results.matHangID,
 				 SoLuong = #Results.soLuong,
-				 GiaBan = #Results.giaBan
+				 GiaBan = #Results.giaBan,
+				 TongGia = #Results.tongGia
 			  FROM #Results 
 			  WHERE  ChiTietHoaDonBan.maChiTietHoaDonBan = #Results.maChiTietHoaDonban AND #Results.status = '2';
 			
@@ -293,7 +306,18 @@ AS
         SELECT '';
     END;
 
-	
+	select * from HoaDonBan
+			select * from ChiTietHoaDonBan
+	EXEC hoadonUpdate 
+    @MaHoaDonBan = 22, -- Thay số 123 bằng mã hóa đơn cần cập nhật
+    @KhachHangID = 'KH001', -- Thay 'KH001' bằng ID khách hàng mới
+    @NgayBan = '2023-12-01', -- Thay '2023-12-01' bằng ngày bán mới
+    @NgayTao = '2023-12-01', -- Thay '2023-12-01' bằng ngày tạo mới
+    @ThanhTien = 150.5, -- Thay 150.5 bằng số tiền mới
+    @list_json_chitietdonhangban = '[
+        {"maChiTietHoaDon": "0", "maHoaDonBan": "22", "matHangID": "MH001", "soLuong": 5, "giaBan": 25.5, "tongGia": 127.5}
+    ]'; -- Thay phần JSON bằng thông tin chi tiết hóa đơn mới
+
 	-- Tạo thủ tục xóa HoaDonBan
 CREATE PROCEDURE hoadonDel
     @MaHoaDonBan int
@@ -569,29 +593,6 @@ exec TimMatHangTheoTenHang N'Sấu Xào Gừng Tiến Thịnh'
 
 ------------------------
 
-CREATE PROCEDURE TimMatHangBanNhieuNhat
-AS
-BEGIN
-    SELECT TOP 1 M.TenHang, SUM(CT.SoLuong) AS SoLuongBanNhieuNhat
-    FROM MatHang M
-    JOIN ChiTietHoaDonBan CT ON M.MatHangID = CT.MatHangID
-    GROUP BY M.TenHang
-    ORDER BY SoLuongBanNhieuNhat DESC
-END
-
-exec ThongKeSanPhamKhachHang
-
-CREATE PROCEDURE ThongKeSanPhamKhachHang
-AS
-BEGIN
-    SELECT KH.KhachHangID, KH.HoTenKH, COUNT(CTHD.MatHangID) AS TongSoSanPhamDaMua
-    FROM KhachHang KH
-    LEFT JOIN HoaDonBan HDB ON KH.KhachHangID = HDB.KhachHangID
-    LEFT JOIN ChiTietHoaDonBan CTHD ON HDB.MaHoaDonBan = CTHD.MaHoaDonBan
-    GROUP BY KH.KhachHangID, KH.HoTenKH
-    ORDER BY TongSoSanPhamDaMua DESC;
-END
-
 ALTER PROCEDURE SearchMatHangByLoaiHang
     @LoaiHangID CHAR(10)
 AS
@@ -618,8 +619,7 @@ BEGIN
     ORDER BY SoLuongDaBan DESC;
 END;
 
-
-select * from MatHang
+select * from HoaDonBan
 select * from ChiTietHoaDonBan
 
 exec TopSellingProduct '3';

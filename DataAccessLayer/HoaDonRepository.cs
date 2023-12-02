@@ -21,8 +21,7 @@ namespace DataAccessLayer
             string msgError = "";
             try
             {
-                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "hoadonID",
-                     "@MaHoaDonBan", id);
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "hoadonID", "@MaHoaDonBan", id);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 return dt.ConvertTo<HoaDonModel>().FirstOrDefault();

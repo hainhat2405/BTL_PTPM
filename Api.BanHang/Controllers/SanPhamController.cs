@@ -42,5 +42,11 @@ namespace Api.BanHang.Controllers
             _sanphamBusiness.Delete(id);
             return Ok(id);
         }
+        [Route("getAllMatHang")]
+        [HttpGet]
+        public List<SanPhamUser> GetAllMH()
+        {
+            return _sanphamBusiness.GetAllMH();
+        }
     }
 }

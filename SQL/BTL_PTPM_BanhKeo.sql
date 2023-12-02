@@ -114,7 +114,7 @@ create table ChiTietTaiKhoan
 	MaChitietTaiKhoan int  primary key,
 	MaTaiKhoan int NULL foreign key references TaiKhoan(MaTaiKhoan) on delete cascade on update cascade,
 	HoTen nvarchar(50) NULL,
-	DiaChi nvarchar(250) NULL,
+	DiaChi nvarchar(11) NULL,
 	SoDienThoai nvarchar(11) NULL,
 )
 
@@ -223,4 +223,5 @@ VALUES
 	('2', '2', 'Duc','HungYen','0984654321')
 
 select * from TaiKhoan
+
 

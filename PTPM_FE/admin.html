@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/home.js"></script>
+    <title>Admin</title>
+</head>
+<body ng-app="AppBanHang"  ng-controller="HomeCtrl">
+    <div id="title">
+        <div class="feature">
+            <h3>Admin</h3>
+            
+            <a href="Login.html">
+                <i class="fa fa-power-off" style="font-size:20px;color:rgb(48, 130, 198)"></i>Đăng xuất
+            </a>
+        </div>
+        <div class="tieude">
+          
+            <h1>Hệ quản trị nội dung</h1>
+        </div>
+    </div>
+    <hr style="border: 2px solid blue;">
+    <hr style="border: 2px solid red;margin-top: 5px;">
+    
+    <div id="page1" >
+        <ul class="menu_list">
+            <li class="active"><a href="#quanlysp">Quản lý sản phẩm</a></li>
+            <li><a href="#quanlysp1">Quản lý tin đặc biệt</a></li>
+            <li><a href="#menu_3">Quản lý tin đặc biệt</a></li>
+            <!-- <li><a href="#menu_4">- Thứ tự theo giá: dưới 100.000đ</a></li>
+            <li><a href="#menu_5">- Thứ tự theo giá: 100.000đ - 200.000đ</a></li>
+            <li><a href="#menu_6">- Thứ tự theo giá: trên 200.000đ</a></li> -->
+            
+        </ul>
+    </div>
+    <div id="page2">
+        
+        <div id="quanlysp" class="tab-content-item">
+             <h3>
+                <i class="fa-solid fa-arrow-right"></i>
+                Quản lý sản phẩm
+            </h3>
+            <div class="addSp" id="thongtindmsp">
+                <div class="addSp1">
+                    <div class="product_sp">
+                        <h3>Mặt hàng ID:</h3>
+                        <input type="text" id="mathang">  
+                    </div>
+                    <div class="product_sp">
+                        <h3>Loại hàng ID:</h3>
+                        <input type="text" id="loaihangid">  
+                    </div>
+                    <div class="product_sp">
+                        <h3>Tên hàng:</h3>
+                        <input type="text" id="tenhang">  
+                    </div>
+                    <div class="product_sp">
+                        <h3>Đơn vị tính:</h3>
+                        <input type="text" id="dvtinh">  
+                    </div>
+                    
+                </div>
+                <div class="addSp2">
+                    <div class="product_sp">
+                        <h3>Số lượng:</h3>
+                        <input type="text" id="sluong">  
+                    </div>
+                    <div class="product_sp">
+                        <h3>Ngày tạo:</h3>
+                        <input type="date" id="ngaytao">  
+                    </div>
+                    <div class="product_sp">
+                        <h3>Ảnh:</h3>
+                        <input type="file" id="anh" onchange="loadFile(event)">  
+                        <center>
+                            <img id="viewimg" style="max-width:180px;max-height:180px;margin-top: 10px;">
+                        </center>
+                    </div>
+                </div>
+                <button class="btnCN" onclick="ThemSanPham()" >Thêm</button>
+                <button class="btnCN" onclick="NhapMoi()">Nhập mới</button>        
+                <button class="btnCN" onclick="CapNhat()">Cập nhật</button> 
+            </div>
+                       
+            <div class="listSP" >
+                <table class="tbl-main" >
+                    <tr class="tr1">
+                        <td>Mặt hàng ID:</td>
+                        <td>Loại hàng ID</td>
+                        <td>Tên hàng</td>
+                        <td>Đơn vị tính</td>
+                        <td>Số lượng</td>
+                        <td>Ngày tạo</td>
+                        <td>Ảnh</td>
+                        <td>Xem</td>
+                        <td>Sửa</td>
+                        <td>Xóa</td>
+                    </tr>
+                    <tr ng-repeat="x in ListAddSP" ng-repeat="x in ListdelSP" style="background: rgb(238, 238, 238);">
+                        <td>{{x.matHangID}}</td>
+                        <td>
+                            {{x.loaiHangID}}
+                        </td>
+                        <td>{{x.tenHang}}</td>
+                        <td>{{x.dvTinh}}</td>
+                        <td>{{x.soLuong}}</td>
+                        <td>{{x.ngayTao}}</td>
+                        
+                        <td>{{x.anh}}</td>
+                        <td><i class="fa-solid fa-magnifying-glass"></i></td>
+                        <td><i class="fa fa-file"></i></td>
+                        <td><i class="fa-solid fa-trash-can"  onclick="XoaSanPham(this)"></i></td>
+                    
+                    </tr>
+                    <tbody id="infosp"></tbody>
+                    
+                    
+                    <!-- <tr style="background: rgb(238, 238, 238);">
+                        <td>91</td>
+                        <td>
+                            <input type="t" name="" id="">
+                        </td>
+                        <td>3503</td>
+                        <td>HDW_ADSNDF</td>
+                        <td>Bánh đậu xanh Hoà An</td>
+                        <td>Kẹo Hà Nội</td>
+                        <td>09/03/2020</td>
+                        <td><i class="fa-solid fa-magnifying-glass"></i></td>
+                        <td><i class="fa fa-file"></i></td>
+                        <td><i class="fa-solid fa-trash-can"></i></td>
+                    </tr> -->
+                    
+                </table>
+            </div>
+
+        </div>
+        <div id="quanlysp1" class="tab-content-item">
+             <h3>
+                <i class="fa-solid fa-arrow-right"></i>
+                Quản lý sản phẩm
+            </h3>
+           
+            <!-- <button style="padding:10px; background-color: rgb(0, 104, 201);color: white;" onclick="showcart()">Thêm</button> -->
+            <div class="tbl_sp">
+                <!-- <div class="addSp">
+                    <div class="product_sp">
+                        <h3>Loại hàng ID:</h3>
+                        <input type="text">
+                        <h3>Mặt hàng:</h3>
+                        <input type="text">
+                        <h3>Tên hàng:</h3>
+                        <input type="text">
+                        <h3>Đơn vị tính:</h3>
+                        <input type="text">
+                        <h3>Số lượng:</h3>
+                        <input type="number">
+                        <h3>Ngày tạo:</h3>
+                        <input type="text">
+                        <h3>Ảnh:</h3>
+                        <input type="text">
+                        
+                    </div>
+                </div> -->
+                
+                <!-- <table class="tbl-main">
+                    <tr class="tr1">
+                        <td>STT</td>
+                        <td>
+                            <input type="checkbox" name="chksp" id="chksp">
+                        </td>
+                        <td>Mã sản phẩm</td>
+                        <td>Mã seri</td>
+                        <td>Tên sản phẩm</td>
+                        <td>Tên chuyên mục</td>
+                        <td>Ngày đăng</td>
+                        <td>Xem</td>
+                        <td>Sửa</td>
+                        <td>Xóa</td>
+                    </tr>
+                    <tr style="background: rgb(238, 238, 238);">
+                        <td>91</td>
+                        <td>
+                            <input type="checkbox" name="" id="">
+                        </td>
+                        <td>3503</td>
+                        <td>HDW_ADSNDF</td>
+                        <td>Bánh đậu xanh Hoà An</td>
+                        <td>Kẹo Hà Nội</td>
+                        <td>09/03/2020</td>
+                        <td><i class="fa-solid fa-magnifying-glass"></i></td>
+                        <td><i class="fa fa-file"></i></td>
+                        <td><i class="fa-solid fa-trash-can"></i></td>
+                    </tr>
+                    
+                </table> -->
+            </div>
+        </div>
+           
+    </div>
+
+</body>
+<script src="resources/js/admin.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.4.js"></script> -->
+<!-- <script>
+    showsp();
+</script> -->
+<script src="js/jquery.js"></script>
+    <script>
+     
+
+
+$(document).ready(function(){
+    $('.tab-content-item').hide();
+    $('.tab-content-item:first-child').fadeIn();
+    $('.menu_list li').click(function(){
+        // active menu
+        $('.menu_list li').removeClass('active');
+        $(this).addClass('active');
+
+        // show tab-pane active
+        let id_tab_content = $(this).children('a').attr('href');
+        // alert(id_tab_content);
+        $('.tab-content-item').hide(); 
+        $(id_tab_content).fadeIn();
+        return false;
+    })
+})
+// $(document).ready(function(){
+//     $('.tab-content-item').hide();
+//     $('.tab-content-item:first-child').fadeIn();
+//     $('.tab-content-item div').click(function(){
+//         // active menu
+//         $('.tab-content-item div').removeClass('active');
+//         $(this).addClass('active');
+
+//         // show tab-pane active
+//         let id_tab_content = $(this).children('a').attr('href');
+//         // alert(id_tab_content);
+//         $('.tab-content-item').hide(); 
+//         $(id_tab_content).fadeIn();
+//         return false;
+//     })
+// })
+
+
+    </script>
+
+<script>
+
+            var list = JSON.parse(localStorage.getItem('Product')) || [];
+
+            function ThemSanPham() {
+                var loaihangid = document.getElementById("loaihangid").value;
+                var mathang = document.getElementById("mathang").value;
+                var tenhang = document.getElementById("tenhang").value;
+                var dvtinh = document.getElementById("dvtinh").value;
+                var sluong = document.getElementById("sluong").value;
+                var ngaytao = document.getElementById("ngaytao").value;
+                var anh = document.getElementById("anh").value;
+                var number = /^[0-9]+$/;
+                
+                    if (loaihangid == '') {
+                        alert("Vui lòng nhập loại hàng");
+                        return false;
+                    }
+                    else if (mathang == '') {
+                        alert("Vui lòng nhập mặt hàng");
+                        return false;
+                    }
+                    else if (tenhang == '') {
+                        alert("Vui lòng nhập tên hàng");
+                        return false;
+                    }
+                    else if (dvtinh == '') {
+                        alert("Vui lòng nhập đơn vị tính");
+                        return false;
+                    }
+                   // Kiểm tra nếu sluong không phải là số
+                    if (isNaN(sluong)) {
+                        alert("Số lượng phải là một số");
+                        return false;
+                    }
+                    // Kiểm tra nếu sluong là chuỗi rỗng
+                    else if (sluong === '') {
+                        alert("Vui lòng nhập số lượng");
+                        return false;
+                    }
+                    else if (ngaytao == '') {
+                        alert("Vui lòng nhập ngày tạo");
+                        return false;
+                    } else if (anh == '') {
+                        alert("Vui lòng chọn ảnh");
+                        return false;
+                    }
+                    else {
+                        for (var x of list) {
+                            if (x.loaihangid == loaihangid) {
+                                alert("Mã sản phẩm đã tồn tại! Vui lòng nhập lại!")
+                                return false;
+                            }
+                        }
+                    }
+                
+                
+                console.log("AddProduct");
+                if (list == null) list = [];
+                var product = {
+                    "loaihangid": loaihangid,
+                    "mathang": mathang,
+                    "tenhang": tenhang,
+                    "dvtinh": dvtinh,
+                    "sluong": sluong,
+                    "ngaytao": ngaytao,
+                    "anh": anh
+                };
+                list.push(product);
+                localStorage.setItem("Product", JSON.stringify(list));
+                alert("Đã thêm thành công!");
+                location.reload();
+            }
+
+            function LoadData() {
+            var str = "";
+            var sl = 0;
+            list.sort();
+            for (x of list) {
+                sl++;
+                str += `  <tr  style="background: rgb(238, 238, 238);">
+                <td>`+x.mathang+`</td>
+                <td>
+                `+x.loaihangid+`
+                </td>
+                <td>`+x.tenhang+`</td>
+                <td>`+x.dvtinh+`</td>
+                <td>`+x.sluong+`</td>
+                <td>`+x.ngaytao+`i</td>
+                <td>`+x.anh+`</td>
+                <td><i class="fa-solid fa-magnifying-glass"></i></td>
+                <td><i class="fa fa-file" onclick="SuaSanPham(`+ x.mathang + `)"></i></td>
+                <td><i class="fa-solid fa-trash-can" onclick="XoaSanPham(`+ x.mathang +` )"></i></td>
+            </tr>`;
+            }
+            document.getElementById("infosp").innerHTML = str;
+            $('#soluong').html(sl);
+            }
+            LoadData();
+            function NhapMoi() {
+                document.getElementById('loaihangid').value = '';
+                document.getElementById('mathang').value = '';
+                document.getElementById('tenhang').value = '';
+                document.getElementById('dvtinh').value = '';
+                document.getElementById('sluong').value = '';
+                document.getElementById('ngaytao').value = '';
+                document.getElementById('anh').value = '';
+            }
+            function XoaSanPham() {
+                if (confirm("Bạn chắc chắn muốn xóa!")) {
+                    var index = list.findIndex(x => x.mathang == mathang);
+                    if (index >= 0) {
+                        list.splice(index, 1);
+                    }
+                    LoadData();
+                    localStorage.setItem('Product', JSON.stringify(list));
+                }
+            }
+
+            function CheckAll(parent) {
+                var ids = document.getElementsByTagName('input');
+                for (var i = 0; i < ids.length; i++) {
+                    if (ids[i].name == "check_all") {
+                        ids[i].checked = parent.checked;
+                    }
+                }
+            }
+
+            function loadFile(event) {
+                var image = document.getElementById('viewimg');
+                image.src = URL.createObjectURL(event.target.files[0]);
+            }
+
+            function SuaSanPham(loaihangid) {
+                for (x of list) {
+                    if (x.loaihangid == loaihangid) {
+                        document.getElementById('loaihangid').value = x.loaihangid;
+                        document.getElementById('mathang').value = x.mathang;
+                        document.getElementById('tenhang').value = x.tenhang;
+                        document.getElementById('dvtinh').value = x.dvtinh;
+                        document.getElementById('sluong').value = x.sluong;
+                        document.getElementById('ngaytao').value = x.ngaytao;
+                        document.getElementById('anh').value = x.anh;
+                    }
+                }
+            }
+
+            function CapNhat() {
+                var loaihangid = document.getElementById("loaihangid").value;
+                var mathang = document.getElementById("mathang").value;
+                var tenhang = document.getElementById("tenhang").value;
+                var dvtinh = document.getElementById("dvtinh").value;
+                var sluong = document.getElementById("sluong").value;
+                var ngaytao = document.getElementById("ngaytao").value;
+                var anh = document.getElementById("anh").value;
+                var number = /^[0-9]+$/;
+                var ok = true;
+
+                
+
+                for (x of list) {
+                    if (x.loaihangid == loaihangid) {
+                        x.mathang = mathang;
+                        x.tenhang = tenhang;
+                        x.dvtinh = dvtinh;
+                        x.sluong = sluong;
+                        x.ngaytao = ngaytao;
+                        x.anh = anh;
+                        ok = false;
+                        break;
+                    }
+                }
+
+                if (ok == false) {
+                    alert("Cập nhật thông tin thành công!");
+                    localStorage.setItem("Product", JSON.stringify(list));
+                    location.reload();
+                }
+                else {
+                    alert("Cập nhật thông tin thất bại!");
+                }
+            }
+        
+        </script>
+
+</html>
